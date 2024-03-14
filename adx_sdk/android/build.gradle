@@ -16,6 +16,7 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -40,6 +41,11 @@ android {
     dependencies {
         testImplementation 'junit:junit:4.13.2'
         testImplementation 'org.mockito:mockito-core:5.0.0'
+
+        // 전면/배너만 포함할 경우
+        implementation "com.github.adxcorp.ADXLibrary_Android:adx-library-standard:2.+"
+        // 리워드 비디오만 포함할 경우
+        implementation "com.github.adxcorp.ADXLibrary_Android:adx-library-rewarded-video:2.+"
     }
 
     testOptions {
