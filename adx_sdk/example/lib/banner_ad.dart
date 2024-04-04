@@ -11,7 +11,7 @@ class AdxBanner extends StatefulWidget {
 
 class _AdxBanner extends State<AdxBanner> {
 
-  String adUnitId = Platform.isAndroid ? "61ee2b7dcb8c67000100002a" : "";
+  String adUnitId = Platform.isAndroid ? "61ee2b7dcb8c67000100002a" : "6200fee42a918d0001000003";
 
   @override
   void initState() {

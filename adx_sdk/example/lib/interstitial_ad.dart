@@ -11,7 +11,7 @@ class AdxInterstitialAd extends StatefulWidget {
 
 class _AdxInterstitialAd extends State<AdxInterstitialAd>{
 
-  String adUnitId = Platform.isAndroid ? "61ee2e3fcb8c67000100002e" : "";
+  String adUnitId = Platform.isAndroid ? "61ee2e3fcb8c67000100002e" : "6200fef52a918d0001000007";
 
   @override
   Widget build(BuildContext context) {

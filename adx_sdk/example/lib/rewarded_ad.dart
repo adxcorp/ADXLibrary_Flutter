@@ -11,7 +11,7 @@ class AdxRewardedAd extends StatefulWidget {
 
 class _AdxRewardedAd extends State<AdxRewardedAd> {
 
-  String adUnitId = Platform.isAndroid ? "61ee2e91cb8c67000100002f" : "";
+  String adUnitId = Platform.isAndroid ? "61ee2e91cb8c67000100002f" : "6200ff0c2a918d000100000d";
 
   @override
   Widget build(BuildContext context) {

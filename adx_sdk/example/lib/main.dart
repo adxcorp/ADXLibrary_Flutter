@@ -6,7 +6,7 @@ import 'banner_ad.dart';
 import 'interstitial_ad.dart';
 import 'rewarded_ad.dart';
 
-String appId = Platform.isAndroid ? "61ee18cecb8c670001000023" : "";
+String appId = Platform.isAndroid ? "61ee18cecb8c670001000023" : "6200fea42a918d0001000001";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
