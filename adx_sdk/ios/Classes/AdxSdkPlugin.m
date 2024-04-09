@@ -51,12 +51,18 @@ static FlutterMethodChannel *adxSdkChannel;
         NSString *appId = call.arguments[@"app_id"];
         NSString *gdprType = call.arguments[@"gdpr_type"];
         NSString *pluginVersion = call.arguments[@"plugin_version"];
+        NSArray *testDevices = call.arguments[@"test_devices"];
 
-        NSLog(@"ADX Flutter Version : %@, ADX SDK Version : %@, App ID : %@, GdprType : %@", pluginVersion, ADX_SDK_VERSION, appId, gdprType);
+        NSLog(@"ADX Flutter Version : %@, ADX SDK Version : %@, App ID : %@, GdprType : %@, TestDevices : %@",
+              pluginVersion, ADX_SDK_VERSION, appId, gdprType, testDevices);
+        
+        ADXGdprType adxGdprType = [self getGdprType:gdprType];
 
         // ADX SDK Initialize
         ADXConfiguration *configuration = [[ADXConfiguration alloc] initWithAppId:appId
-                                                                         gdprType:ADXGdprTypePopupLocation];
+                                                                         gdprType:adxGdprType
+                                                                      testDevices:testDevices];
+        
         configuration.logLevel = ADXLogLevelDebug;
         [[ADXSdk sharedInstance] initializeWithConfiguration:configuration
                                            completionHandler:^(BOOL resultFlag, ADXConsentState consentState) {
@@ -151,6 +157,25 @@ static FlutterMethodChannel *adxSdkChannel;
 
         [self.rewardedAds removeObjectForKey: adUnitId];
         result(nil);
+    }
+}
+
+- (ADXGdprType)getGdprType:(NSString *) gdprType {
+    if ([@"popup_debug" isEqualToString:gdprType]) {
+        return ADXGdprTypePopupDebug;
+    } else if ([@"popup_location" isEqualToString:gdprType]) {
+        return ADXGdprTypePopupLocation;
+    } else if ([@"direct_not_required" isEqualToString:gdprType]) {
+        return ADXGdprTypeDirectNotRequired;
+    } else if ([@"direct_denied" isEqualToString:gdprType]) {
+        return ADXGdprTypeDirectDenied;
+    } else if ([@"direct_confirm" isEqualToString:gdprType]) {
+        return ADXGdprTypeDirectConfirm;
+    } else if ([@"direct_unknown" isEqualToString:gdprType]) {
+        return ADXGdprTypeDirectUnknown;
+    } else {
+        [NSException raise: NSInvalidArgumentException format: @"Invalid GdprType"];
+        return ADXGdprTypeDirectUnknown;
     }
 }
 

@@ -21,6 +21,7 @@ import com.adxcorp.gdpr.ADXGDPR;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -60,14 +61,16 @@ public class AdxSdkPlugin implements FlutterPlugin, MethodCallHandler, ActivityA
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
     if (call.method.equals("initialize")) {
 
+      String pluginVersion = call.argument("plugin_version");
       String appId = call.argument("app_id");
       String gdprType = call.argument("gdpr_type");
-      String pluginVersion = call.argument("plugin_version");
+      List<String> testDevices = call.argument("test_devices");
 
       Log.d(TAG, "ADX Flutter Version : " + pluginVersion
               + ", ADX SDK Version : " + ADXGDPR.ADX_SDK_VERSION
               + ", App ID : " + appId
-              + ", GdprType : " + gdprType);
+              + ", GdprType : " + gdprType
+              + ", TestDevices : " + testDevices);
 
       ADXConfiguration.GdprType gdprTypeValue = getGdprType(gdprType);
 
@@ -75,7 +78,7 @@ public class AdxSdkPlugin implements FlutterPlugin, MethodCallHandler, ActivityA
       ADXConfiguration adxConfiguration = new ADXConfiguration.Builder()
               .setAppId(appId)
               .setGdprType(gdprTypeValue)
-              .setTestDeviceIds(Arrays.asList("")) // UMP Test Device
+              .setTestDeviceIds(testDevices) // UMP Test Device
               .build();
 
       ADXSdk.getInstance().initialize(getCurrentActivity(), adxConfiguration, new ADXSdk.OnInitializedListener() {

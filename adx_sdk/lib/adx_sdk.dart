@@ -15,7 +15,7 @@ class AdxSdk {
 
   AdxSdk();
 
-  static void initialize(String appId, String gdprType) {
+  static void initialize(String appId, String gdprType, List<String> testDevices) {
 
     channel.setMethodCallHandler((MethodCall call) async {
       var method = call.method;
@@ -64,7 +64,8 @@ class AdxSdk {
     channel.invokeMethod('initialize', {
       'plugin_version': version,
       'app_id': appId,
-      'gdpr_type': gdprType
+      'gdpr_type': gdprType,
+      'test_devices': testDevices
     });
   }
 

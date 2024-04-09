@@ -11,7 +11,13 @@ String appId = Platform.isAndroid ? "61ee18cecb8c670001000023" : "6200fea42a918d
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  AdxSdk.initialize(appId, AdxCommon.gdprTypePopupDebug);
+  /*
+  AdxSdk.initialize(appId, AdxCommon.gdprTypePopupDebug, [
+    "A2C1FCC7-58E5-4BEA-A892-3AE7C3EC270F", // iOS Test Devices
+    "5DC04AFC04574D1BF8C7F32D83F5D28F" // AOS Test Devices
+  ]);
+   */
+  AdxSdk.initialize(appId, AdxCommon.gdprTypePopupDebug, []);
 
   runApp(const MyApp());
 }
