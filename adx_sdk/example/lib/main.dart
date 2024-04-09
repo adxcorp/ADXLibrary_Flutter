@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:adx_sdk/adx_sdk.dart';
 import 'dart:io' show Platform;
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 import 'banner_ad.dart';
 import 'interstitial_ad.dart';
@@ -11,16 +12,30 @@ String appId = Platform.isAndroid ? "61ee18cecb8c670001000023" : "6200fea42a918d
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  /*
-  AdxSdk.initialize(appId, AdxCommon.gdprTypePopupDebug, [
-    "A2C1FCC7-58E5-4BEA-A892-3AE7C3EC270F", // iOS Test Devices
-    "5DC04AFC04574D1BF8C7F32D83F5D28F" // AOS Test Devices
-  ]);
-   */
-  AdxSdk.initialize(appId, AdxCommon.gdprTypePopupDebug, []);
+  if (Platform.isAndroid) {
+    AdxSdk.initialize(appId, AdxCommon.gdprTypeDirectNotRequired, []);
+  } else if (Platform.isIOS) {
+    initAttPlugin();
+  }
 
   runApp(const MyApp());
 }
+
+Future<void> initAttPlugin() async {
+  final TrackingStatus status =
+  await AppTrackingTransparency.trackingAuthorizationStatus;
+  if (status == TrackingStatus.notDetermined) {
+    final TrackingStatus status =
+    await AppTrackingTransparency.requestTrackingAuthorization();
+  }
+
+  final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
+  print("UUID: $uuid");
+
+  AdxSdk.initialize(appId, AdxCommon.gdprTypeDirectNotRequired, []);
+}
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
