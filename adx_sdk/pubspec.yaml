@@ -1,11 +1,12 @@
 name: adx_sdk
-description: "A new Flutter plugin project."
-version: 0.0.1
-homepage:
+description: AD(X) Flutter Plugin for Android and iOS
+version: 1.0.0
+homepage: https://www.adxcorp.kr
+repository: https://github.com/adxcorp/ADXLibrary_Flutter
 
 environment:
-  sdk: '>=3.3.1 <4.0.0'
-  flutter: '>=3.3.0'
+  sdk: '>=2.19.6 <4.0.0'
+  flutter: ">=2.5.0"
 
 dependencies:
   flutter:
@@ -15,7 +16,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
