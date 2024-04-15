@@ -67,7 +67,8 @@ static FlutterMethodChannel *adxSdkChannel;
         [[ADXSdk sharedInstance] initializeWithConfiguration:configuration
                                            completionHandler:^(BOOL resultFlag, ADXConsentState consentState) {
             NSLog(@"ADX Sdk Initialize");
-            result(@(resultFlag));
+            NSDictionary *data = @{@"result" : @(resultFlag), @"consent" : @(consentState)};
+            result(data);
         }];
     } else if ([@"isInitialized" isEqualToString: call.method]) {
         BOOL isInitialized = [[ADXSdk sharedInstance] isInitialized];

@@ -21,3 +21,13 @@ class AdxCommon {
   static const String positionBottomLeft = "bottom_left";
   static const String positionBottomRight = "bottom_right";
 }
+
+class AdxInitResult {
+  bool? result;
+  int? consent;
+
+  AdxInitResult(resultFlag, consentStatus) {
+    result = resultFlag;
+    consent = consentStatus;
+  }
+}

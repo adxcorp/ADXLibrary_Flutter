@@ -13,12 +13,17 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (Platform.isAndroid) {
-    AdxSdk.initialize(appId, AdxCommon.gdprTypeDirectNotRequired, []);
+    initializeAdxPlugin();
   } else if (Platform.isIOS) {
     initAttPlugin();
   }
 
   runApp(const MyApp());
+}
+
+Future<void> initializeAdxPlugin() async {
+  AdxInitResult adxInitResult = await AdxSdk.initialize(appId, AdxCommon.gdprTypeDirectNotRequired, []);
+  print("adxInitResult : ${adxInitResult.result}, ${adxInitResult.consent}");
 }
 
 Future<void> initAttPlugin() async {
@@ -32,7 +37,7 @@ Future<void> initAttPlugin() async {
   final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
   print("UUID: $uuid");
 
-  AdxSdk.initialize(appId, AdxCommon.gdprTypeDirectNotRequired, []);
+  initializeAdxPlugin();
 }
 
 

@@ -85,7 +85,26 @@ public class AdxSdkPlugin implements FlutterPlugin, MethodCallHandler, ActivityA
         @Override
         public void onCompleted(boolean resultFlag, ADXGDPR.ADXConsentState adxConsentState) {
           // 광고 초기화 완료
-          result.success(resultFlag);
+          HashMap<String, Object> dataMap = new HashMap<String,Object>();
+          dataMap.put("result", resultFlag);
+
+          int consent = 0;
+          switch (adxConsentState) {
+            case ADXConsentStateUnknown:
+              break;
+            case ADXConsentStateNotRequired:
+              consent = 1;
+              break;
+            case ADXConsentStateDenied:
+              consent = 2;
+              break;
+            case ADXConsentStateConfirm:
+              consent = 3;
+              break;
+          }
+          dataMap.put("consent", consent);
+
+          result.success(dataMap);
         }
       });
 

@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:adx_sdk/src/adx_sdk_listener.dart';
+import 'package:adx_sdk/src/adx_sdk_common.dart';
 
 export 'package:adx_sdk/src/adx_sdk_listener.dart';
 export 'package:adx_sdk/src/adx_sdk_common.dart';
@@ -15,7 +16,7 @@ class AdxSdk {
 
   AdxSdk();
 
-  static void initialize(String appId, String gdprType, List<String> testDevices) {
+  static Future<AdxInitResult> initialize(String appId, String gdprType, List<String> testDevices) async {
 
     channel.setMethodCallHandler((MethodCall call) async {
       var method = call.method;
@@ -61,12 +62,17 @@ class AdxSdk {
       }
     });
 
-    channel.invokeMethod('initialize', {
+    var res = await channel.invokeMethod('initialize', {
       'plugin_version': version,
       'app_id': appId,
       'gdpr_type': gdprType,
       'test_devices': testDevices
     });
+
+    var result = res["result"];
+    var consent = res["consent"];
+
+    return AdxInitResult(result, consent);
   }
 
   static Future<bool?> isInitialized() {
