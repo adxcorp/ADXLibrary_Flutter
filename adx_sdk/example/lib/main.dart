@@ -22,8 +22,13 @@ void main() {
 }
 
 Future<void> initializeAdxPlugin() async {
-  AdxInitResult adxInitResult = await AdxSdk.initialize(appId, AdxCommon.gdprTypeDirectNotRequired, []);
-  print("adxInitResult : ${adxInitResult.result}, ${adxInitResult.consent}");
+  AdxInitResult adxInitResult = await AdxSdk.initialize(
+                                    appId,
+                                    AdxCommon.gdprTypeDirectNotRequired,
+                                    []);
+  bool result = adxInitResult.result;
+  int consentState = adxInitResult.consent;
+  print("ADX Init result : $result, consentState : $consentState");
 }
 
 Future<void> initAttPlugin() async {

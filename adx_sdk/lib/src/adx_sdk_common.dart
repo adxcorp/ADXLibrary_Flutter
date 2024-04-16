@@ -23,8 +23,8 @@ class AdxCommon {
 }
 
 class AdxInitResult {
-  bool? result;
-  int? consent;
+  bool result = false;
+  int consent = 0;
 
   AdxInitResult(resultFlag, consentStatus) {
     result = resultFlag;
