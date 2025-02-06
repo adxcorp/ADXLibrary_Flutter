@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'adx_sdk'
-  s.version          = '2.5.4'
+  s.version          = '2.7.0'
   s.summary          = 'Adx Ads plugin for Flutter'
   s.description      = <<-DESC
 A new Flutter plugin project.
@@ -45,15 +45,15 @@ A new Flutter plugin project.
 
   s.libraries = 'z', 'sqlite3', 'xml2', 'c++'
 
-  s.dependency 'Google-Mobile-Ads-SDK', '11.2.0'
-  s.dependency 'AppLovinSDK', '12.3.0'
-  s.dependency 'AdPieSDK', '1.6.0'
-  s.dependency 'FBAudienceNetwork','6.15.0'
-  s.dependency 'Ads-Global/BUAdSDK_Compatible', '5.8.0.8'
-  s.dependency 'MintegralAdSDK', '7.5.9'
-  s.dependency 'MintegralAdSDK/BidSplashAd', '7.5.9'
-  s.dependency 'Fyber_Marketplace_SDK', '8.2.7'
-  s.dependency 'UnityAds', '4.10.0'
+  s.dependency 'Google-Mobile-Ads-SDK', '11.12.0'
+  s.dependency 'AppLovinSDK', '13.0.1'
+  s.dependency 'AdPieSDK', '1.6.5'
+  s.dependency 'FBAudienceNetwork','6.15.2'
+  s.dependency 'Ads-Global', '6.3.0.9'
+  s.dependency 'MintegralAdSDK', '7.7.3'
+  s.dependency 'MintegralAdSDK/BidSplashAd', '7.7.3'
+  s.dependency 'UnityAds', '4.12.4'
+  s.dependency 'MolocoSDKiOS', '3.3.1'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = {

@@ -5,12 +5,12 @@
 //  Copyright © 2017 AD(X) Corp. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #import "ADXConfiguration.h"
 #import "ADXGdprConstants.h"
 
-#define ADX_SDK_VERSION @"2.5.4"
+#define ADX_SDK_VERSION @"2.7.0"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,6 +26,13 @@ typedef void(^ADXCompletionHandler)(BOOL result, ADXConsentState consentState);
 
 - (void)initializeWithConfiguration:(ADXConfiguration *)configuration
                   completionHandler:(nullable ADXCompletionHandler)completionHandler;
+
+- (void)initializeWithConfiguration:(ADXConfiguration *)configuration
+                  umpViewController:(nullable UIViewController *)umpViewController
+                  completionHandler:(nullable ADXCompletionHandler)completionHandler;
+
+// This method should only be called in response to a user input to request a privacy options form to be shown.
+- (void)showGDPRForm:(UIViewController * __nullable)viewController completionHandler:(void (^)(BOOL))completionHandler;
 
 @end
 

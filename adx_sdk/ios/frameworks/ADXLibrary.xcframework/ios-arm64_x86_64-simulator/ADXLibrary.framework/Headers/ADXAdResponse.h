@@ -23,8 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, assign) BOOL enableBiddingKit;
 @property (readonly, assign) double biddingKitEcpm;
 @property (readonly, assign) NSInteger requestTimeout;
+@property (readonly, assign) NSInteger biddingRequestTimeout;
 @property (readonly, copy) NSString *biddingKitAdUnitId;
 @property (readonly, copy) NSString *biddingKitMediationId;
+@property (readonly, copy) NSString * biddingPlatform;
 @property (readonly, assign) long bannerRefreshInterval;
 @property (readonly, assign) BOOL debuggable;
 @property (readonly, strong) NSArray<ADXMediationData *> *mediations;
