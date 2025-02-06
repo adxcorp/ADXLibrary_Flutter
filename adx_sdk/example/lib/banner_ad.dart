@@ -3,6 +3,7 @@ import 'package:adx_sdk/adx_sdk.dart';
 import 'dart:io' show Platform;
 
 class AdxBanner extends StatefulWidget {
+  const AdxBanner({super.key});
   @override
   State<StatefulWidget> createState() {
     return _AdxBanner();
@@ -18,13 +19,13 @@ class _AdxBanner extends State<AdxBanner> {
     super.initState();
     AdxSdk.setBannerListener(BannerListener(
         onAdLoaded: (){
-          print("AdxSample AdView - onAdLoaded");
+          debugPrint("AdxSample AdView - onAdLoaded");
         },
         onAdError: (int errorCode) {
-          print("AdxSample AdView - onAdError : $errorCode");
+          debugPrint("AdxSample AdView - onAdError : $errorCode");
         },
         onAdClicked: (){
-          print("AdxSample AdView - onAdClicked");
+          debugPrint("AdxSample AdView - onAdClicked");
         }));
 
     AdxSdk.setBannerPosition(adUnitId, AdxCommon.positionBottomCenter);

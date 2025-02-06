@@ -3,6 +3,7 @@ import 'package:adx_sdk/adx_sdk.dart';
 import 'dart:io' show Platform;
 
 class AdxRewardedAd extends StatefulWidget {
+  const AdxRewardedAd({super.key});
   @override
   State<StatefulWidget> createState() {
     return _AdxRewardedAd();
@@ -27,19 +28,19 @@ class _AdxRewardedAd extends State<AdxRewardedAd> {
                 onPressed: () {
                   AdxSdk.setRewardedAdListener(RewardedAdListener(
                     onAdLoaded: (){
-                      print("AdxSample RewardedAd - onAdLoaded");
+                      debugPrint("AdxSample RewardedAd - onAdLoaded");
                     }, onAdError: (int errorCode){
-                      print("AdxSample RewardedAd - onAdError : $errorCode");
+                      debugPrint("AdxSample RewardedAd - onAdError : $errorCode");
                     }, onAdImpression: (){
-                      print("AdxSample RewardedAd - onAdImpression");
+                      debugPrint("AdxSample RewardedAd - onAdImpression");
                     }, onAdClicked: (){
-                      print("AdxSample RewardedAd - onAdClicked");
+                      debugPrint("AdxSample RewardedAd - onAdClicked");
                     }, onAdRewarded: (){
-                      print("AdxSample RewardedAd - onAdRewarded");
+                      debugPrint("AdxSample RewardedAd - onAdRewarded");
                     }, onAdClosed: (){
-                      print("AdxSample RewardedAd - onAdClosed");
+                      debugPrint("AdxSample RewardedAd - onAdClosed");
                     }, onAdFailedToShow: (){
-                      print("AdxSample RewardedAd - onAdFailedToShow");
+                      debugPrint("AdxSample RewardedAd - onAdFailedToShow");
                     }));
                   AdxSdk.loadRewardedAd(adUnitId);
                 },

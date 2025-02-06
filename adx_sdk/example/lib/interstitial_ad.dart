@@ -3,6 +3,7 @@ import 'package:adx_sdk/adx_sdk.dart';
 import 'dart:io' show Platform;
 
 class AdxInterstitialAd extends StatefulWidget {
+  const AdxInterstitialAd({super.key});
   @override
   State<StatefulWidget> createState() {
     return _AdxInterstitialAd();
@@ -27,22 +28,22 @@ class _AdxInterstitialAd extends State<AdxInterstitialAd>{
                 onPressed: () {
                   AdxSdk.setInterstitialListener(InterstitialAdListener(
                       onAdLoaded: (){
-                        print("AdxSample InterstitialAd - onAdLoaded");
+                        debugPrint("AdxSample InterstitialAd - onAdLoaded");
                       },
                       onAdError: (int errorCode){
-                        print("AdxSample InterstitialAd - onAdError : $errorCode");
+                        debugPrint("AdxSample InterstitialAd - onAdError : $errorCode");
                       },
                       onAdImpression: (){
-                        print("AdxSample InterstitialAd - onAdImpression");
+                        debugPrint("AdxSample InterstitialAd - onAdImpression");
                       },
                       onAdClicked: (){
-                        print("AdxSample InterstitialAd - onAdClicked");
+                        debugPrint("AdxSample InterstitialAd - onAdClicked");
                       },
                       onAdClosed: (){
-                        print("AdxSample InterstitialAd - onAdClosed");
+                        debugPrint("AdxSample InterstitialAd - onAdClosed");
                       },
                       onAdFailedToShow: (){
-                        print("AdxSample InterstitialAd - onAdFailedToShow");
+                        debugPrint("AdxSample InterstitialAd - onAdFailedToShow");
                       })
                   );
 
