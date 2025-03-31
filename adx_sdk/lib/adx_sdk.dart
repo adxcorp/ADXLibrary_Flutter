@@ -141,6 +141,20 @@ class AdxSdk {
     });
   }
 
+  static void setUserIdForSSV(String adUnitId, String userId) {
+    channel.invokeMethod('setUserIdForSSV', {
+      'ad_unit_id': adUnitId,
+      'user_id': userId
+    });
+  }
+
+  static void setCustomDataForSSV(String adUnitId, String customData) {
+    channel.invokeMethod('setCustomDataForSSV', {
+      'ad_unit_id': adUnitId,
+      'custom_data': customData
+    });
+  }
+
   static void destroyRewardedAd(String adUnitId) {
     channel.invokeMethod('destroyRewardedAd', {
       'ad_unit_id': adUnitId,
