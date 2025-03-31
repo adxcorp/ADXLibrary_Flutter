@@ -158,6 +158,20 @@ static FlutterMethodChannel *adxSdkChannel;
 
         [self.rewardedAds removeObjectForKey: adUnitId];
         result(nil);
+    } else if ([@"setUserIdForSSV" isEqualToString: call.method]) {
+        ADXRewardedAd *rewardedAd = [self retrieveRewardedAdForadUnitId:call.arguments[@"ad_unit_id"]];
+        if (rewardedAd) {
+            NSString * userId = call.arguments[@"user_id"] ?: @"";;
+            [rewardedAd setSSVOptionWithUserId:userId];
+        }
+        result(nil);
+    } else if ([@"setCustomDataForSSV" isEqualToString: call.method]) {
+        ADXRewardedAd *rewardedAd = [self retrieveRewardedAdForadUnitId:call.arguments[@"ad_unit_id"]];
+        if (rewardedAd) {
+            NSString * customData = call.arguments[@"custom_data"] ?: @"";;
+            [rewardedAd setSSVOptionWithCustomData:customData];
+        }
+        result(nil);
     }
 }
 
