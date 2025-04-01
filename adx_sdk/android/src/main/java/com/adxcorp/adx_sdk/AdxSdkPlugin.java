@@ -247,6 +247,22 @@ public class AdxSdkPlugin implements FlutterPlugin, MethodCallHandler, ActivityA
 
       result.success(null);
 
+    } else if (call.method.equals("setUserIdForSSV")) {
+      String adUnitId = call.argument("ad_unit_id");
+      String userId = call.argument("user_id");
+      if (mRewardedAds.containsKey(adUnitId) && userId.isEmpty() == false) {
+        RewardedAd rewardedAd = retrieveRewardedAd(adUnitId);
+        rewardedAd.setUserIdForSSV(userId);
+      }
+      result.success(null);
+    } else if (call.method.equals("setCustomDataForSSV")) {
+      String adUnitId = call.argument("ad_unit_id");
+      String customData = call.argument("custom_data");
+      if (mRewardedAds.containsKey(adUnitId) && customData.isEmpty() == false) {
+        RewardedAd rewardedAd = retrieveRewardedAd(adUnitId);
+        rewardedAd.setCustomDataForSSV(customData);
+      }
+      result.success(null);
     } else if (call.method.equals("destroyRewardedAd")) {
       String adUnitId = call.argument("ad_unit_id");
 
