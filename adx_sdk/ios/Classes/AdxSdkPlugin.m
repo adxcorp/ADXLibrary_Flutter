@@ -134,6 +134,14 @@ static FlutterMethodChannel *adxSdkChannel;
     } else if ([@"loadRewardedAd" isEqualToString: call.method]) {
         ADXRewardedAd *rewardedAd = [self retrieveRewardedAdForadUnitId:call.arguments[@"ad_unit_id"]];
         rewardedAd.delegate = self;
+        NSString * userId = call.arguments[@"user_id"] ?: @"";;
+        if([userId length]) {
+            [rewardedAd setSSVOptionWithUserId:userId];
+        }
+        NSString * customData = call.arguments[@"custom_data"] ?: @"";;
+        if([customData length]) {
+            [rewardedAd setSSVOptionWithCustomData:customData];
+        }
         [rewardedAd loadAd];
         result(nil);
     } else if ([@"isRewardedAdLoaded" isEqualToString: call.method]) {
