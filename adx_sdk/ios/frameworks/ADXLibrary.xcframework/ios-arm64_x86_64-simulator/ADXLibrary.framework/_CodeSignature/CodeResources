@@ -6,7 +6,7 @@
 	<dict>
 		<key>FBAudienceNetwork.bundle/Info.plist</key>
 		<data>
-		ZFrnu4+YKZqaeECNdaqwemh8Ii0=
+		XdJ87ZtCIWglQ7BZ4EzpvRHQyjo=
 		</data>
 		<key>FBAudienceNetwork.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -14,7 +14,7 @@
 		</data>
 		<key>GoogleMobileAdsResources.bundle/Info.plist</key>
 		<data>
-		MjvUUj2Z50l8dOZlITa4w0ovT1Y=
+		DWYD7zXocyUE8obAD316QmWaDjY=
 		</data>
 		<key>GoogleMobileAdsResources.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -22,7 +22,7 @@
 		</data>
 		<key>Headers/ADXAdConstants.h</key>
 		<data>
-		OfLK+8Amzf1XA90disqWWjIC1+0=
+		xhCRrFe5oxdOR2lbGxK4X0WU1As=
 		</data>
 		<key>Headers/ADXAdError.h</key>
 		<data>
@@ -82,7 +82,7 @@
 		</data>
 		<key>Headers/ADXLog.h</key>
 		<data>
-		0UHdHt4QeYvODRFRX/y16eFef+k=
+		WYUwwmA3oi6KdCPpNMm13KBYnl4=
 		</data>
 		<key>Headers/ADXLogLevel.h</key>
 		<data>
@@ -130,7 +130,7 @@
 		</data>
 		<key>Headers/ADXSdk.h</key>
 		<data>
-		8QxF8QMLfEeq+/hTmPbPP/6jq1Y=
+		Fk8P9Ifx62MMdXyj+1/qHQ7qLjA=
 		</data>
 		<key>Headers/ADXTableViewAdPlacer.h</key>
 		<data>
@@ -142,7 +142,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		yjcHlNxNkRG+sU3qylvlvnRGO3E=
+		a8j3PRoimeBaGqur1A0G9pjQzw8=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -154,7 +154,7 @@
 		</data>
 		<key>UserMessagingPlatformResources.bundle/Info.plist</key>
 		<data>
-		5OKIMxtnqRQ7sRkTg5a0BgQGbfc=
+		/pJ63mqel7uaUDzbxVZu7sgoFp0=
 		</data>
 		<key>UserMessagingPlatformResources.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -167,11 +167,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ZFrnu4+YKZqaeECNdaqwemh8Ii0=
+			XdJ87ZtCIWglQ7BZ4EzpvRHQyjo=
 			</data>
 			<key>hash2</key>
 			<data>
-			CCQLmwOdcjGTfyZfuS+tH7C4TFwM98sSlfNfhY/rSkk=
+			HlqAr6eOt45Ihg6wJGEohpqZ7cbwLsMmDDpLrXqeLhs=
 			</data>
 		</dict>
 		<key>FBAudienceNetwork.bundle/PrivacyInfo.xcprivacy</key>
@@ -189,11 +189,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			MjvUUj2Z50l8dOZlITa4w0ovT1Y=
+			DWYD7zXocyUE8obAD316QmWaDjY=
 			</data>
 			<key>hash2</key>
 			<data>
-			a8fsSd9zlCCL+eqiCa98x3Pgjt/HaN1EacwuJJavlDM=
+			30Cl035G9gou2/x+ydoqLw/HIdA6rR/ZXU/CCcPCYrk=
 			</data>
 		</dict>
 		<key>GoogleMobileAdsResources.bundle/PrivacyInfo.xcprivacy</key>
@@ -211,11 +211,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			OfLK+8Amzf1XA90disqWWjIC1+0=
+			xhCRrFe5oxdOR2lbGxK4X0WU1As=
 			</data>
 			<key>hash2</key>
 			<data>
-			A3m5yejdBFujZW87DMGnBV3pPIfUyM1z+qAnht+83Hg=
+			+xVy90IZgGem46GBRVicHwFVENVFPB+AmyZsHbIV9es=
 			</data>
 		</dict>
 		<key>Headers/ADXAdError.h</key>
@@ -376,11 +376,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			0UHdHt4QeYvODRFRX/y16eFef+k=
+			WYUwwmA3oi6KdCPpNMm13KBYnl4=
 			</data>
 			<key>hash2</key>
 			<data>
-			grY5Pw2ayek14xy2aH7qBnh/2Ih00Kv/ojeSFsjJXqY=
+			1/t4W59KXc5ZiQeWwIhvK0O/W9QkbhPoYNd7WJStfAw=
 			</data>
 		</dict>
 		<key>Headers/ADXLogLevel.h</key>
@@ -508,11 +508,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			8QxF8QMLfEeq+/hTmPbPP/6jq1Y=
+			Fk8P9Ifx62MMdXyj+1/qHQ7qLjA=
 			</data>
 			<key>hash2</key>
 			<data>
-			NEY72JPXvrn6zpzYENjuzPFVqUb4p5oj2wT5LEGYg9k=
+			aNGB3dFcQfjjbBOm7tscfPhFMs/9afwtMkNHxvLx7Mg=
 			</data>
 		</dict>
 		<key>Headers/ADXTableViewAdPlacer.h</key>
@@ -563,11 +563,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			5OKIMxtnqRQ7sRkTg5a0BgQGbfc=
+			/pJ63mqel7uaUDzbxVZu7sgoFp0=
 			</data>
 			<key>hash2</key>
 			<data>
-			7WnD2n8gVVwKHYu5LLTM+rqMH6sQPxoibylxxo6TB0g=
+			+BM2RQltZ13UxegwSD0avfZIB63b7p14Fua1S9VINwo=
 			</data>
 		</dict>
 		<key>UserMessagingPlatformResources.bundle/PrivacyInfo.xcprivacy</key>

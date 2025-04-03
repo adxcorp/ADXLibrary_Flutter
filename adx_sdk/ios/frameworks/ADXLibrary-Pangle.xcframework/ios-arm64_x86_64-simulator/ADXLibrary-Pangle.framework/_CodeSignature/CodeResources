@@ -6,7 +6,7 @@
 	<dict>
 		<key>AdsGlobalSDK.bundle/Info.plist</key>
 		<data>
-		BRLdMHdA3uU1OOz9il4DispVEaI=
+		cd7724J9VBRsBiUPPSAzuQs/AK4=
 		</data>
 		<key>AdsGlobalSDK.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -14,7 +14,7 @@
 		</data>
 		<key>GoogleMobileAdsResources.bundle/Info.plist</key>
 		<data>
-		MjvUUj2Z50l8dOZlITa4w0ovT1Y=
+		DWYD7zXocyUE8obAD316QmWaDjY=
 		</data>
 		<key>GoogleMobileAdsResources.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -26,7 +26,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		3JYKii3LZ/w/p/s6KvfyRelHiTo=
+		e+lFLdmtcX3okJo/gZO81Yey6Sc=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -34,11 +34,11 @@
 		</data>
 		<key>PAGAdSDK.bundle/Assets.car</key>
 		<data>
-		k1jRERLUW6HSSrZsWCgyV+zfXmY=
+		Ba48WK7hTZ0gO2uLBGUuWYx97Zg=
 		</data>
 		<key>PAGAdSDK.bundle/Info.plist</key>
 		<data>
-		wUK5lCFjzBIxJgJoMNByXtoOurA=
+		5RhKCkc7cSCRsSMHkKYhn5Z0agw=
 		</data>
 		<key>PAGAdSDK.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -59,7 +59,7 @@
 		</data>
 		<key>PAGAdSDK.bundle/bu_dynamic_default.json</key>
 		<data>
-		bq+EQgtComvnQStA2ZiGevb/z9Y=
+		OZqGLg4/MuIGA5RkQLl85TCwE4o=
 		</data>
 		<key>PAGAdSDK.bundle/bu_slienceAudio.aiff</key>
 		<data>
@@ -214,7 +214,7 @@
 		</dict>
 		<key>PAGAdSDK.bundle/version.txt</key>
 		<data>
-		pvTqcPkoAq/NQtbpkdbF6ndRNEE=
+		E5hS1GIvfvDzmlwP+RR7cX380og=
 		</data>
 		<key>PAGAdSDK.bundle/vi.lproj/BULanguage.strings</key>
 		<dict>
@@ -245,7 +245,7 @@
 		</dict>
 		<key>UserMessagingPlatformResources.bundle/Info.plist</key>
 		<data>
-		5OKIMxtnqRQ7sRkTg5a0BgQGbfc=
+		/pJ63mqel7uaUDzbxVZu7sgoFp0=
 		</data>
 		<key>UserMessagingPlatformResources.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -258,11 +258,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			BRLdMHdA3uU1OOz9il4DispVEaI=
+			cd7724J9VBRsBiUPPSAzuQs/AK4=
 			</data>
 			<key>hash2</key>
 			<data>
-			XZ2KvrngBTwtp1F1jjFJmrWZhbbb8gj83ESyydqmCTw=
+			lNCcLiMvSIFQ3s7XNRyutj5IQspSTdBivI31PMbkEOI=
 			</data>
 		</dict>
 		<key>AdsGlobalSDK.bundle/PrivacyInfo.xcprivacy</key>
@@ -280,11 +280,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			MjvUUj2Z50l8dOZlITa4w0ovT1Y=
+			DWYD7zXocyUE8obAD316QmWaDjY=
 			</data>
 			<key>hash2</key>
 			<data>
-			a8fsSd9zlCCL+eqiCa98x3Pgjt/HaN1EacwuJJavlDM=
+			30Cl035G9gou2/x+ydoqLw/HIdA6rR/ZXU/CCcPCYrk=
 			</data>
 		</dict>
 		<key>GoogleMobileAdsResources.bundle/PrivacyInfo.xcprivacy</key>
@@ -324,22 +324,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			k1jRERLUW6HSSrZsWCgyV+zfXmY=
+			Ba48WK7hTZ0gO2uLBGUuWYx97Zg=
 			</data>
 			<key>hash2</key>
 			<data>
-			trYzmVVZgXlKvcvIEG2q0OIeTxqNzVYMg26IH5mOp2Y=
+			o1vn3O/1+TcmSu1gzxcNtRNRmmVebfc1+wfcLMKUW0Q=
 			</data>
 		</dict>
 		<key>PAGAdSDK.bundle/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			wUK5lCFjzBIxJgJoMNByXtoOurA=
+			5RhKCkc7cSCRsSMHkKYhn5Z0agw=
 			</data>
 			<key>hash2</key>
 			<data>
-			TGMs/+F15e6nRLK2nfcytOfGCnRk2LSIjV3sK+PcBPI=
+			RzXCBaQ+bZXL4rU2huWaAgUIAn88xqC38ynKalKvpJE=
 			</data>
 		</dict>
 		<key>PAGAdSDK.bundle/PrivacyInfo.xcprivacy</key>
@@ -381,11 +381,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			bq+EQgtComvnQStA2ZiGevb/z9Y=
+			OZqGLg4/MuIGA5RkQLl85TCwE4o=
 			</data>
 			<key>hash2</key>
 			<data>
-			qtl0P/D3t/4DW5mLgbINpsvwyAMS3btgAv+o3j8oZgo=
+			TmuU6Lx6rDy1EbkpumDP23Np4MGvwLCGP5mTbh8BwDU=
 			</data>
 		</dict>
 		<key>PAGAdSDK.bundle/bu_slienceAudio.aiff</key>
@@ -631,11 +631,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			pvTqcPkoAq/NQtbpkdbF6ndRNEE=
+			E5hS1GIvfvDzmlwP+RR7cX380og=
 			</data>
 			<key>hash2</key>
 			<data>
-			Poz4cvGCQvQKNjUg937ScXCAo8E6t3I/GueLi1i+FAc=
+			X0DLgi0gLgoXp8J/5KjX5TdT+0/9bswx7EC7X81jHc8=
 			</data>
 		</dict>
 		<key>PAGAdSDK.bundle/vi.lproj/BULanguage.strings</key>
@@ -681,11 +681,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			5OKIMxtnqRQ7sRkTg5a0BgQGbfc=
+			/pJ63mqel7uaUDzbxVZu7sgoFp0=
 			</data>
 			<key>hash2</key>
 			<data>
-			7WnD2n8gVVwKHYu5LLTM+rqMH6sQPxoibylxxo6TB0g=
+			+BM2RQltZ13UxegwSD0avfZIB63b7p14Fua1S9VINwo=
 			</data>
 		</dict>
 		<key>UserMessagingPlatformResources.bundle/PrivacyInfo.xcprivacy</key>

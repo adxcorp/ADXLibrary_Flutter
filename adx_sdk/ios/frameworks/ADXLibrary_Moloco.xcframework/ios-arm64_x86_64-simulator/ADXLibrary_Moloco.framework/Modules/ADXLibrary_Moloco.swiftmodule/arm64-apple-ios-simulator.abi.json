@@ -40,18 +40,8 @@
       },
       {
         "kind": "Import",
-        "name": "AppLovinSDK",
-        "printedName": "AppLovinSDK",
-        "declKind": "Import",
-        "moduleName": "ADXLibrary_Moloco",
-        "declAttributes": [
-          "RawDocComment"
-        ]
-      },
-      {
-        "kind": "Import",
-        "name": "MolocoSDK",
-        "printedName": "MolocoSDK",
+        "name": "ADXLibrary",
+        "printedName": "ADXLibrary",
         "declKind": "Import",
         "moduleName": "ADXLibrary_Moloco"
       },
@@ -108,6 +98,30 @@
       },
       {
         "kind": "Import",
+        "name": "MolocoSDK",
+        "printedName": "MolocoSDK",
+        "declKind": "Import",
+        "moduleName": "ADXLibrary_Moloco"
+      },
+      {
+        "kind": "Import",
+        "name": "ADXLibrary",
+        "printedName": "ADXLibrary",
+        "declKind": "Import",
+        "moduleName": "ADXLibrary_Moloco"
+      },
+      {
+        "kind": "Import",
+        "name": "AppLovinSDK",
+        "printedName": "AppLovinSDK",
+        "declKind": "Import",
+        "moduleName": "ADXLibrary_Moloco",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
         "name": "AppLovinSDK",
         "printedName": "AppLovinSDK",
         "declKind": "Import",
@@ -125,6 +139,13 @@
       },
       {
         "kind": "Import",
+        "name": "ADXLibrary",
+        "printedName": "ADXLibrary",
+        "declKind": "Import",
+        "moduleName": "ADXLibrary_Moloco"
+      },
+      {
+        "kind": "Import",
         "name": "AppLovinSDK",
         "printedName": "AppLovinSDK",
         "declKind": "Import",
@@ -137,6 +158,13 @@
         "kind": "Import",
         "name": "MolocoSDK",
         "printedName": "MolocoSDK",
+        "declKind": "Import",
+        "moduleName": "ADXLibrary_Moloco"
+      },
+      {
+        "kind": "Import",
+        "name": "ADXLibrary",
+        "printedName": "ADXLibrary",
         "declKind": "Import",
         "moduleName": "ADXLibrary_Moloco"
       }
