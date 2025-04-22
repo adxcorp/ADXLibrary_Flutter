@@ -6,7 +6,7 @@ export 'package:adx_sdk/src/adx_sdk_listener.dart';
 export 'package:adx_sdk/src/adx_sdk_common.dart';
 
 class AdxSdk {
-  static const version = "1.0.5";
+  static const version = "1.0.6";
 
   static const channel = MethodChannel('adx_sdk');
 
