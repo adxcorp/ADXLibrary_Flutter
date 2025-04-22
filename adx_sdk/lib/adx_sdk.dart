@@ -131,9 +131,11 @@ class AdxSdk {
     });
   }
 
-  static void showRewardedAd(String adUnitId) {
+  static void showRewardedAd(String adUnitId, {String? ssvUserId, String? ssvCustomData}) {
     channel.invokeMethod('showRewardedAd', {
       'ad_unit_id': adUnitId,
+      'user_id': ssvUserId ?? '',
+      'custom_data': ssvCustomData ?? ''
     });
   }
 
