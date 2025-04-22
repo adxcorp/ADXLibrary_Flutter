@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'adx_sdk'
-  s.version          = '2.7.2'
+  s.version          = '2.7.3'
   s.summary          = 'Adx Ads plugin for Flutter'
   s.description      = <<-DESC
 A new Flutter plugin project.
