@@ -1,3 +1,5 @@
+## 1.0.7
+* Android SDK 2.7.6 업데이트
 ## 1.0.6
 * Android SDK 2.7.5 업데이트
 * iOS SDK 2.7.3 업데이트
