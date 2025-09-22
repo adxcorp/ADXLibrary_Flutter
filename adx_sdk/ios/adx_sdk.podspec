@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'adx_sdk'
-  s.version          = '2.7.3'
+  s.version          = '2.8.1'
   s.summary          = 'Adx Ads plugin for Flutter'
   s.description      = <<-DESC
 A new Flutter plugin project.
@@ -18,7 +18,7 @@ A new Flutter plugin project.
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
   s.vendored_frameworks = "frameworks/*.xcframework"
-  s.platform = :ios, '12.0'
+  s.platform = :ios, '13.0'
   s.static_framework = true
 
   s.frameworks = [
@@ -45,15 +45,15 @@ A new Flutter plugin project.
 
   s.libraries = 'z', 'sqlite3', 'xml2', 'c++'
 
-  s.dependency 'Google-Mobile-Ads-SDK', '11.13.0'
-  s.dependency 'AppLovinSDK', '13.1.0'
-  s.dependency 'AdPieSDK', '1.6.7'
-  s.dependency 'FBAudienceNetwork','6.15.2'
-  s.dependency 'Ads-Global', '6.5.0.9'
-  s.dependency 'MintegralAdSDK', '7.7.7'
-  s.dependency 'MintegralAdSDK/BidSplashAd', '7.7.7'
-  s.dependency 'UnityAds', '4.14.0'
-  s.dependency 'MolocoSDKiOS', '3.7.2'
+  s.dependency 'Google-Mobile-Ads-SDK', '12.5.0'
+  s.dependency 'AppLovinSDK', '13.3.0'
+  s.dependency 'AdPieSDK', '1.6.13'
+  s.dependency 'FBAudienceNetwork','6.17.1'
+  s.dependency 'Ads-Global', '7.1.1.1'
+  s.dependency 'MintegralAdSDK', '7.7.8'
+  s.dependency 'MintegralAdSDK/BidSplashAd', '7.7.8'
+  s.dependency 'UnityAds', '4.14.2'
+  s.dependency 'MolocoSDKiOS', '3.9.1'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = {
