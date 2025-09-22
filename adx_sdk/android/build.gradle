@@ -43,9 +43,9 @@ android {
         testImplementation 'org.mockito:mockito-core:5.0.0'
 
         // 전면/배너만 포함할 경우
-        implementation "com.github.adxcorp.ADXLibrary_Android:adx-library-standard:2.7.6"
+        implementation "com.github.adxcorp.ADXLibrary_Android:adx-library-standard:2.8.0"
         // 리워드 비디오만 포함할 경우
-        implementation "com.github.adxcorp.ADXLibrary_Android:adx-library-rewarded-video:2.7.6"
+        implementation "com.github.adxcorp.ADXLibrary_Android:adx-library-rewarded-video:2.8.0"
     }
 
     testOptions {
