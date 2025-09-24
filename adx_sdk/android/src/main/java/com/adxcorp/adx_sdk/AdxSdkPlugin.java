@@ -2,6 +2,7 @@ package com.adxcorp.adx_sdk;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -9,6 +10,9 @@ import android.view.ViewParent;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.adxcorp.ads.ADXConfiguration;
 import com.adxcorp.ads.ADXSdk;
@@ -132,6 +136,16 @@ public class AdxSdkPlugin implements FlutterPlugin, MethodCallHandler, ActivityA
       if (bannerAd.getParent() == null) {
         Activity currentActivity = getCurrentActivity();
         RelativeLayout relativeLayout = new RelativeLayout(currentActivity);
+
+        if (Build.VERSION.SDK_INT >= 35) {
+          ViewCompat.setOnApplyWindowInsetsListener(relativeLayout, (v, insets) -> {
+            Insets sys = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(0, sys.top, 0, sys.bottom);
+            return insets;
+          });
+          ViewCompat.requestApplyInsets(relativeLayout);
+        }
+
         currentActivity.addContentView(relativeLayout, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.MATCH_PARENT));
 
