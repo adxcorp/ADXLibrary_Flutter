@@ -27,7 +27,7 @@ android {
         namespace 'com.adxcorp.adx_sdk'
     }
 
-    compileSdk 34
+    compileSdk 35
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -35,7 +35,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 23
     }
 
     dependencies {
