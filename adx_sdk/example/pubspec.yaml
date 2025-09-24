@@ -29,6 +29,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   app_tracking_transparency: ^2.0.4
+  applovin_max: ^4.5.0
 
 dev_dependencies:
   integration_test:

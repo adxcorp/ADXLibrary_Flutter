@@ -5,8 +5,10 @@ import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'banner_ad.dart';
 import 'interstitial_ad.dart';
 import 'rewarded_ad.dart';
+import 'native_ad.dart';
 
 String appId = Platform.isAndroid ? "61ee18cecb8c670001000023" : "6200fea42a918d0001000001";
+String maxUnitId = Platform.isAndroid ? "29bb8c3647d905ad" : "48decfe1e3ed88a8";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -72,7 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<String> adList = <String>[
       'Banner Ad',
       'Interstitial Ad',
-      'Rewarded Ad'
+      'Rewarded Ad',
+      'Native Ad With AppLovin MAX'
     ];
 
     return Scaffold(
@@ -104,6 +107,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const AdxRewardedAd()),
+                  );
+                  break;
+                default:
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NativeAdView(adUnitId: maxUnitId)),
                   );
                   break;
               }
