@@ -43,8 +43,6 @@ A new Flutter plugin project.
                       'WebKit'
                    ]
 
-  s.libraries = 'z', 'sqlite3', 'xml2', 'c++'
-
   s.dependency 'Google-Mobile-Ads-SDK', '12.5.0'
   s.dependency 'AppLovinSDK', '13.3.0'
   s.dependency 'AdPieSDK', '1.6.13'
