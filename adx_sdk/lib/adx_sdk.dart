@@ -4,6 +4,7 @@ import 'package:adx_sdk/src/adx_sdk_common.dart';
 
 export 'package:adx_sdk/src/adx_sdk_listener.dart';
 export 'package:adx_sdk/src/adx_sdk_common.dart';
+export 'package:adx_sdk/src/adx_sdk_native_ad_view.dart';
 
 class AdxSdk {
   static const version = "1.0.9";

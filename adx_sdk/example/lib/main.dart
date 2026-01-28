@@ -1,3 +1,4 @@
+import 'adx_native_ad.dart';
 import 'package:flutter/material.dart';
 import 'package:adx_sdk/adx_sdk.dart';
 import 'dart:io' show Platform;
@@ -5,8 +6,7 @@ import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'banner_ad.dart';
 import 'interstitial_ad.dart';
 import 'rewarded_ad.dart';
-
-String appId = Platform.isAndroid ? "61ee18cecb8c670001000023" : "6200fea42a918d0001000001";
+import 'native_ad.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,27 +15,26 @@ void main() {
 }
 
 Future<void> initializeAdxPlugin() async {
-
   if (Platform.isIOS) {
-    /// Do not call the method below if calling 'AdxSdk.initialize()' method with 'gdprTypePopupLocation' or 'gdprTypePopupDebug'
     await requestTrackingAuthorization();
   }
 
-  AdxInitResult adxInitResult = await AdxSdk.initialize(
-                                    appId,
-                                    AdxCommon.gdprTypeDirectNotRequired,
-                                    []);
+  String appId = Platform.isAndroid 
+      ? "61ee18cecb8c670001000023" 
+      : "61ee3aafcb8c670001000034";
 
-  bool result = adxInitResult.result;
-  int consentState = adxInitResult.consent;
-  debugPrint("ADX Init result : $result, consentState : $consentState");
+  AdxInitResult result = await AdxSdk.initialize(
+    appId, 
+    AdxCommon.gdprTypeDirectNotRequired, 
+    []
+  );
+
+  debugPrint("ADX Init result : ${result.result}, consentState : ${result.consent}");
 }
 
 Future<void> requestTrackingAuthorization() async {
-  final TrackingStatus status =
-  await AppTrackingTransparency.trackingAuthorizationStatus;
+  final status = await AppTrackingTransparency.trackingAuthorizationStatus;
   if (status == TrackingStatus.notDetermined) {
-    final TrackingStatus status =
     await AppTrackingTransparency.requestTrackingAuthorization();
   }
   final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
@@ -45,14 +44,11 @@ Future<void> requestTrackingAuthorization() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'AD(X) Flutter Sample',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: const MyHomePage(title: 'ADX Flutter Sample Page'),
     );
   }
@@ -66,51 +62,37 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final Map<String, WidgetBuilder> _demos = {
+    'Banner Ad': (context) => const AdxBanner(),
+    'Interstitial Ad': (context) => const AdxInterstitialAd(),
+    'Rewarded Ad': (context) => const AdxRewardedAd(),
+    'Native Ad': (context) => const AdxTestNativeAdView(adUnitId: '61ee3ae4cb8c670001000038'),
+    'Native Ad With AppLovin MAX': (context) => NativeAdView(
+        adUnitId: Platform.isAndroid ? "29bb8c3647d905ad" : "48decfe1e3ed88a8"
+    ),
+  };
+
   @override
   Widget build(BuildContext context) {
-
-    final List<String> adList = <String>[
-      'Banner Ad',
-      'Interstitial Ad',
-      'Rewarded Ad'
-    ];
-
+    final demoKeys = _demos.keys.toList();
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: ListView.separated(
-        itemCount: adList.length,
-        itemBuilder: (BuildContext context, int index) {
+        itemCount: _demos.length,
+        itemBuilder: (context, index) {
+          final title = demoKeys[index];
           return ListTile(
-            title: Text(adList[index], textAlign: TextAlign.center),
+            title: Text(title, textAlign: TextAlign.center),
             onTap: () {
-              switch(index) {
-                case 0:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AdxBanner()),
-                  );
-                  break;
-                case 1:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AdxInterstitialAd()),
-                  );
-                  break;
-                case 2:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const AdxRewardedAd()),
-                  );
-                  break;
-              }
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: _demos[title]!)
+              );
             },
           );
-        }, separatorBuilder: (BuildContext context, int index) { return const Divider(thickness: 0,); },
-      )// This trailing comma makes auto-formatting nicer for build methods.
+        },
+        separatorBuilder: (context, index) => const Divider(thickness: 0),
+      ),
     );
   }
 }

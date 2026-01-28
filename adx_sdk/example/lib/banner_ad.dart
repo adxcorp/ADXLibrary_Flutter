@@ -4,48 +4,44 @@ import 'dart:io' show Platform;
 
 class AdxBanner extends StatefulWidget {
   const AdxBanner({super.key});
+
   @override
-  State<StatefulWidget> createState() {
-    return _AdxBanner();
-  }
+  State<StatefulWidget> createState() => _AdxBannerState();
 }
 
-class _AdxBanner extends State<AdxBanner> {
-
-  String adUnitId = Platform.isAndroid ? "61ee2b7dcb8c67000100002a" : "6200fee42a918d0001000003";
+class _AdxBannerState extends State<AdxBanner> {
+  final String _adUnitId = Platform.isAndroid 
+      ? "61ee2b7dcb8c67000100002a" 
+      : "6200fee42a918d0001000003";
 
   @override
   void initState() {
     super.initState();
-    AdxSdk.setBannerListener(BannerListener(
-        onAdLoaded: (){
-          debugPrint("AdxSample AdView - onAdLoaded");
-        },
-        onAdError: (int errorCode) {
-          debugPrint("AdxSample AdView - onAdError : $errorCode");
-        },
-        onAdClicked: (){
-          debugPrint("AdxSample AdView - onAdClicked");
-        }));
+    _loadBannerAd();
+  }
 
-    AdxSdk.setBannerPosition(adUnitId, AdxCommon.positionBottomCenter);
-    AdxSdk.loadBannerAd(adUnitId, AdxCommon.size_320x50);
+  void _loadBannerAd() {
+    AdxSdk.setBannerListener(BannerListener(
+      onAdLoaded: () => debugPrint("AdxSample AdView - onAdLoaded"),
+      onAdError: (errorCode) => debugPrint("AdxSample AdView - onAdError : $errorCode"),
+      onAdClicked: () => debugPrint("AdxSample AdView - onAdClicked"),
+    ));
+
+    AdxSdk.setBannerPosition(_adUnitId, AdxCommon.positionBottomCenter);
+    AdxSdk.loadBannerAd(_adUnitId, AdxCommon.size_320x50);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Banner Ad'),
-      ),
+      appBar: AppBar(title: const Text('Banner Ad')),
       body: Container(),
     );
   }
 
   @override
   void dispose() {
+    AdxSdk.destroyBannerAd(_adUnitId);
     super.dispose();
-
-    AdxSdk.destroyBannerAd(adUnitId);
   }
 }
