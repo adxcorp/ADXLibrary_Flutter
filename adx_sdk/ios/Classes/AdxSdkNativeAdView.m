@@ -104,7 +104,13 @@
     [self setupLayoutForFactoryView:factoryView targetAdView:targetAdView];
     [self hideUnusedAssetViews];
 
-    NSMutableDictionary *arguments = [[self extractAdDataFromNativeAd:targetAdView] mutableCopy];
+    NSMutableDictionary * arguments = [[self extractAdDataFromNativeAd:targetAdView] mutableCopy];
+    if(![arguments count]) {
+        NSLog(@"failed to extract ad data.");
+        [self onFailure:adUnitId];
+        return;
+    }
+    
     arguments[@"ad_unit_id"] = adUnitId;
     
     [AdxSdkPlugin sendEventWithName:@"NativeAd_onSuccess" arguments:arguments channel:self.channel];
@@ -257,7 +263,7 @@
         return firstSubview;
     }
     
-    return factoryView;
+    return nil;
 }
 
 - (void)setupLayoutForFactoryView:(UIView *)factoryView targetAdView:(UIView *)targetAdView {
