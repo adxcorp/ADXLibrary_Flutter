@@ -9,7 +9,7 @@
 @property (copy) NSString * adUnitId;
 @property (nullable) ADXNativeAd * nativeAd;
 @property UIView * platformView;
-@property UIView <ADXNativeAdRendering> * nativeAdView;
+@property UIView * nativeAdView;
 @property (assign) NSInteger mainImageLoadCount;
 @end
 
@@ -93,7 +93,7 @@
     UIView *factoryView = [[ADXNativeAdFactory sharedInstance] getNativeAdView:adUnitId];
     UIView *targetAdView = [self findTargetAdView:factoryView];
     
-    self.nativeAdView = (UIView<ADXNativeAdRendering> *)targetAdView;
+    self.nativeAdView = (UIView *)targetAdView;
     
     if (!self.nativeAd || !self.nativeAdView) {
         NSLog(@"nativeAd or nativeAdView is nil");
@@ -250,12 +250,6 @@
 #pragma mark - Layout & Helpers
 
 - (UIView *)findTargetAdView:(UIView *)factoryView {
-    if ([factoryView isKindOfClass:[GADNativeAdView class]] ||
-        [factoryView isKindOfClass:[MANativeAdView class]] ||
-        [factoryView conformsToProtocol:@protocol(ADXNativeAdRendering)]) {
-        return factoryView;
-    }
-    
     UIView *firstSubview = [factoryView.subviews firstObject];
     if (firstSubview && ([firstSubview isKindOfClass:[GADNativeAdView class]] ||
                          [firstSubview isKindOfClass:[MANativeAdView class]] ||
