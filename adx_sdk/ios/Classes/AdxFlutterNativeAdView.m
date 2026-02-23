@@ -37,6 +37,13 @@
     self.nativeIconImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     self.nativeMainImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     self.nativePrivacyInformationIconImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    
+    [self addSubview:self.nativeTitleTextLabel];
+    [self addSubview:self.nativeMainTextLabel];
+    [self addSubview:self.nativeCallToActionButton];
+    [self addSubview:self.nativeIconImageView];
+    [self addSubview:self.nativeMainImageView];
+    [self addSubview:self.nativePrivacyInformationIconImageView];
 }
 
 @end
