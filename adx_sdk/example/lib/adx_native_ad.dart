@@ -33,7 +33,7 @@ class _AdxTestNativeAdViewState extends State<AdxTestNativeAdView> {
                   adUnitId: widget.adUnitId,
                   controller: _nativeAdViewController,
                   listener: AdxNativeAdListener(
-                    onSuccess: () => debugPrint("AdxSample NativeAd - onSuccess"),
+                    onSuccess: (id) => debugPrint("AdxSample NativeAd - onSuccess, AdUnitId : $id"),
                     onFailure: (id) => debugPrint("AdxSample NativeAd - onFailure, AdUnitId : $id"),
                   ),
                   child: _buildNativeAdContent(),

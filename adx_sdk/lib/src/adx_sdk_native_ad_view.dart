@@ -30,7 +30,7 @@ class AdxNativeAdController extends ChangeNotifier {
 
 /// Listener for native ad events. Provides callbacks for success and failure.
 class AdxNativeAdListener {
-  final void Function() onSuccess;
+  final void Function(String adUnitId) onSuccess;
   final void Function(String adUnitId) onFailure;
   
   AdxNativeAdListener({
@@ -161,7 +161,7 @@ class _AdxNativeAdViewState extends State<AdxNativeAdView> {
           }
         });
         await _updateAllAssetViews();
-        widget.listener?.onSuccess();
+        widget.listener?.onSuccess(widget.adUnitId);
       } else if (method == "NativeAd_onFailure") {
         setState(() { _adData = {}; });
         widget.listener?.onFailure(widget.adUnitId);
