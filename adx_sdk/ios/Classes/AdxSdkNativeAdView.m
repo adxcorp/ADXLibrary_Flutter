@@ -257,13 +257,20 @@
 
 - (UIView *)findTargetAdView:(UIView *)factoryView {
     UIView *firstSubview = [factoryView.subviews firstObject];
-    if (firstSubview && ([firstSubview isKindOfClass:[GADNativeAdView class]] ||
-                         [firstSubview isKindOfClass:[MANativeAdView class]] ||
-                         [firstSubview conformsToProtocol:@protocol(ADXNativeAdRendering)])) {
+    
+    if(!firstSubview) { return nil; }
+    
+    if ([firstSubview isKindOfClass:[GADNativeAdView class]]) {
+        NSLog(@"ClassType: GADNativeAdView");
+        return firstSubview;
+    } else if ([firstSubview isKindOfClass:[MANativeAdView class]]) {
+        NSLog(@"ClassType: MANativeAdView");
+        return firstSubview;
+    } else if ([firstSubview conformsToProtocol:@protocol(ADXNativeAdRendering)]) {
+        NSLog(@"ClassType: ADXNativeAdRendering");
         return firstSubview;
     }
-    
-    return nil;
+    else { return nil; }
 }
 
 - (void)setupLayoutForFactoryView:(UIView *)factoryView targetAdView:(UIView *)targetAdView {
