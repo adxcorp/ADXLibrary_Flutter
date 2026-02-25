@@ -140,7 +140,6 @@ class _AdxNativeAdViewState extends State<AdxNativeAdView> {
   }
 
   void _handleControllerChanged() {
-    setState(() { _adData = {}; });
     _methodChannel?.invokeMethod("loadNativeAd");
   }
 
@@ -163,7 +162,6 @@ class _AdxNativeAdViewState extends State<AdxNativeAdView> {
         await _updateAllAssetViews();
         widget.listener?.onSuccess(widget.adUnitId);
       } else if (method == "NativeAd_onFailure") {
-        setState(() { _adData = {}; });
         widget.listener?.onFailure(widget.adUnitId);
       } else {
         throw MissingPluginException('No handler for method $method');

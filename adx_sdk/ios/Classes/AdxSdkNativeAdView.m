@@ -30,6 +30,10 @@
             [weakSelf handleMethodCall:call result:result];
         }];
         
+        [[ADXNativeAdFactory sharedInstance] addDelegate:self];
+        [[ADXNativeAdFactory sharedInstance] setRenderingViewClass:adUnitId
+                                                renderingViewClass:[AdxFlutterNativeAdView class]];
+        
         self.platformView = [[UIView alloc] initWithFrame:frame];
     }
     return self;
@@ -40,6 +44,7 @@
         [self loadNativeAd];
         result(nil);
     } else if ([@"destroyNativeAd" isEqualToString:call.method]) {
+        [[ADXNativeAdFactory sharedInstance] removeDelegate:self];
         [self destroyNativeAd];
         result(nil);
     } else {
@@ -61,8 +66,6 @@
 }
 
 - (void)destroyNativeAd {
-    [[ADXNativeAdFactory sharedInstance] removeDelegate:self];
-    
     self.nativeAd = nil;
     if (self.nativeAdView) {
         NSLog(@"%s", __PRETTY_FUNCTION__);
@@ -73,12 +76,6 @@
 }
 
 - (void)loadNativeAd {
-    [self destroyNativeAd];
-    
-    [[ADXNativeAdFactory sharedInstance] addDelegate:self];
-    [[ADXNativeAdFactory sharedInstance] setRenderingViewClass:self.adUnitId
-                                            renderingViewClass:[AdxFlutterNativeAdView class]];
-    
     [[ADXNativeAdFactory sharedInstance] loadAd:self.adUnitId];
 }
 
@@ -87,6 +84,8 @@
 - (void)onSuccess:(NSString *)adUnitId nativeAd:(ADXNativeAd *)nativeAd {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     if (![self.adUnitId isEqualToString:adUnitId]) return;
+    
+    [self destroyNativeAd];
     
     self.nativeAd = nativeAd;
     
@@ -269,12 +268,15 @@
     } else if ([firstSubview conformsToProtocol:@protocol(ADXNativeAdRendering)]) {
         NSLog(@"ClassType: ADXNativeAdRendering");
         return firstSubview;
+    } else {
+        return nil;
     }
-    else { return nil; }
 }
 
 - (void)setupLayoutForFactoryView:(UIView *)factoryView targetAdView:(UIView *)targetAdView {
+    [self.platformView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.platformView addSubview:factoryView];
+    
     factoryView.translatesAutoresizingMaskIntoConstraints = NO;
     
     [NSLayoutConstraint activateConstraints:@[
