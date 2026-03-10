@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.RelativeLayout;
@@ -21,9 +22,12 @@ import com.adxcorp.ads.InterstitialAd;
 import com.adxcorp.ads.RewardedAd;
 import com.adxcorp.ads.common.AdConstants;
 import com.adxcorp.ads.mediation.util.DisplayUtil;
+import com.adxcorp.ads.nativeads.AdxNativeAdFactory;
+import com.adxcorp.ads.nativeads.AdxViewBinder;
+import com.adxcorp.ads.nativeads.NativeAd;
 import com.adxcorp.gdpr.ADXGDPR;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,8 +54,24 @@ public class AdxSdkPlugin implements FlutterPlugin, MethodCallHandler, ActivityA
 
   private final Map<String, BannerAd> mBannerAds = new HashMap<>(2);
   private final Map<String, String> mBannerAdPositions = new HashMap<>(2);
+  private final Map<String, RelativeLayout> mNativeAdContainers = new HashMap<>(2);
+  private final Map<String, String> mNativeAdPositions = new HashMap<>(2);
   private final Map<String, InterstitialAd> mInterstitialAds = new HashMap<>(2);
   private final Map<String, RewardedAd> mRewardedAds = new HashMap<>(2);
+  private final AdxNativeAdFactory.NativeAdListener mNativeAdFactoryListener = new AdxNativeAdFactory.NativeAdListener() {
+    @Override
+    public void onSuccess(String adUnitId, NativeAd nativeAd) {
+      showNativeAd(adUnitId);
+      defaultChannel.invokeMethod("NativeAd_onAdLoaded", null);
+    }
+
+    @Override
+    public void onFailure(String adUnitId) {
+      Map<String, Object> params = new HashMap<>();
+      params.put("error_code", -1);
+      defaultChannel.invokeMethod("NativeAd_onAdError", params);
+    }
+  };
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -111,6 +131,7 @@ public class AdxSdkPlugin implements FlutterPlugin, MethodCallHandler, ActivityA
           result.success(dataMap);
         }
       });
+      initNativeFactoryIfNeeded();
 
     } else if (call.method.equals("isInitialized")) {
 
@@ -179,6 +200,41 @@ public class AdxSdkPlugin implements FlutterPlugin, MethodCallHandler, ActivityA
       }
 
       mBannerAdPositions.remove(adUnitId);
+
+      result.success(null);
+
+    } else if (call.method.equals("setNativeAdPosition")) {
+
+      String adUnitId = call.argument("ad_unit_id");
+      String position = call.argument("position");
+
+      mNativeAdPositions.put(adUnitId, position);
+      updatePositionNativeAd(adUnitId);
+
+      result.success(null);
+
+    } else if (call.method.equals("loadNativeAd")) {
+
+      String adUnitId = call.argument("ad_unit_id");
+
+      initNativeFactoryIfNeeded();
+      createNativeContainerIfNeeded(adUnitId);
+      bindDefaultNativeRendererIfNeeded(adUnitId);
+      AdxNativeAdFactory.loadAd(adUnitId);
+
+      result.success(null);
+
+    } else if (call.method.equals("isNativeAdLoaded")) {
+
+      String adUnitId = call.argument("ad_unit_id");
+
+      result.success(AdxNativeAdFactory.isLoaded(adUnitId));
+
+    } else if (call.method.equals("destroyNativeAd")) {
+
+      String adUnitId = call.argument("ad_unit_id");
+
+      destroyNativeAd(adUnitId);
 
       result.success(null);
 
@@ -383,6 +439,218 @@ public class AdxSdkPlugin implements FlutterPlugin, MethodCallHandler, ActivityA
     bannerAd.setLayoutParams(layoutParams);
   }
 
+  private void initNativeFactoryIfNeeded() {
+    if (context == null) {
+      return;
+    }
+
+    if (!AdxNativeAdFactory.isInitialized()) {
+      AdxNativeAdFactory.init(context);
+    }
+
+    AdxNativeAdFactory.removeListener(mNativeAdFactoryListener);
+    AdxNativeAdFactory.addListener(mNativeAdFactoryListener);
+  }
+
+  private void createNativeContainerIfNeeded(String adUnitId) {
+    if (mNativeAdContainers.containsKey(adUnitId)) {
+      return;
+    }
+
+    Activity currentActivity = getCurrentActivity();
+    if (currentActivity == null) {
+      return;
+    }
+
+    RelativeLayout container = new RelativeLayout(currentActivity);
+
+    if (Build.VERSION.SDK_INT >= 35) {
+      ViewCompat.setOnApplyWindowInsetsListener(container, (v, insets) -> {
+        Insets sys = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+        v.setPadding(0, sys.top, 0, sys.bottom);
+        return insets;
+      });
+      ViewCompat.requestApplyInsets(container);
+    }
+
+    currentActivity.addContentView(
+            container,
+            new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT));
+
+    mNativeAdContainers.put(adUnitId, container);
+    updatePositionNativeAd(adUnitId);
+  }
+
+  private void showNativeAd(String adUnitId) {
+    RelativeLayout container = mNativeAdContainers.get(adUnitId);
+    if (container == null) {
+      createNativeContainerIfNeeded(adUnitId);
+      container = mNativeAdContainers.get(adUnitId);
+    }
+
+    if (container == null) {
+      return;
+    }
+
+    View nativeView = AdxNativeAdFactory.getNativeAdView(
+            context,
+            adUnitId,
+            container,
+            new NativeAd.NativeEventListener() {
+              @Override
+              public void onImpression(View view) {
+                defaultChannel.invokeMethod("NativeAd_onAdImpression", null);
+              }
+
+              @Override
+              public void onClick(View view) {
+                defaultChannel.invokeMethod("NativeAd_onAdClicked", null);
+              }
+            });
+
+    if (nativeView != null) {
+      updatePositionNativeAd(adUnitId);
+    }
+  }
+
+  private void updatePositionNativeAd(String adUnitId) {
+    RelativeLayout container = mNativeAdContainers.get(adUnitId);
+    if (container == null) {
+      return;
+    }
+
+    String position = mNativeAdPositions.get(adUnitId);
+    if (TextUtils.isEmpty(position)) {
+      position = "bottom_center";
+    }
+
+    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT);
+
+    switch (position) {
+      case "top_center":
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        break;
+      case "top_left":
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        break;
+      case "top_right":
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        break;
+      case "center":
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        break;
+      case "center_left":
+        layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        break;
+      case "center_right":
+        layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        break;
+      case "bottom_center":
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        break;
+      case "bottom_left":
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        break;
+      case "bottom_right":
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        break;
+      default:
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        break;
+    }
+
+    container.setLayoutParams(layoutParams);
+  }
+
+  private int resourceId(String name, String type) {
+    if (context == null) {
+      return 0;
+    }
+
+    return context.getResources().getIdentifier(name, type, context.getPackageName());
+  }
+
+  private void bindDefaultNativeRendererIfNeeded(String adUnitId) {
+    if (AdxNativeAdFactory.getAdxViewBinder(adUnitId) != null) {
+      return;
+    }
+
+    int layoutId = resourceId("adx_close_native_ad_layout_ex", "layout");
+    if (layoutId == 0) {
+      return;
+    }
+
+    AdxViewBinder.Builder builder = new AdxViewBinder.Builder(layoutId);
+
+    int titleId = resourceId("title_textview", "id");
+    if (titleId != 0) {
+      builder.titleId(titleId);
+    }
+
+    int textId = resourceId("content_textview", "id");
+    if (textId != 0) {
+      builder.textId(textId);
+    }
+
+    int ctaId = resourceId("call_to_action_button", "id");
+    if (ctaId != 0) {
+      builder.callToActionId(ctaId);
+    }
+
+    int mediaContainerId = resourceId("big_imageview_container", "id");
+    if (mediaContainerId != 0) {
+      builder.mediaViewContainerId(mediaContainerId);
+    }
+
+    int iconId = resourceId("logo_imageview", "id");
+    if (iconId != 0) {
+      builder.iconImageId(iconId);
+    }
+
+    int adChoiceId = resourceId("adchoice_container", "id");
+    if (adChoiceId != 0) {
+      builder.adChoiceContainerId(adChoiceId);
+    }
+
+    int advertiserId = resourceId("messageTextView", "id");
+    if (advertiserId != 0) {
+      builder.advertiserNameId(advertiserId);
+    }
+
+    AdxNativeAdFactory.setAdxViewBinder(adUnitId, builder.build());
+  }
+
+  private void destroyNativeAd(String adUnitId) {
+    NativeAd nativeAd = AdxNativeAdFactory.getNativeAd(adUnitId);
+    if (nativeAd != null && !nativeAd.isDestroyed()) {
+      nativeAd.destroy();
+    }
+
+    RelativeLayout container = mNativeAdContainers.get(adUnitId);
+    if (container != null) {
+      ViewParent parent = container.getParent();
+      if (parent instanceof ViewGroup) {
+        ((ViewGroup) parent).removeView(container);
+      }
+    }
+
+    mNativeAdContainers.remove(adUnitId);
+    mNativeAdPositions.remove(adUnitId);
+  }
+
   private BannerAd retrieveBannerAd(String adUnitId, String size) {
     BannerAd bannerAd = mBannerAds.get(adUnitId);
     if (bannerAd == null) {
@@ -534,6 +802,11 @@ public class AdxSdkPlugin implements FlutterPlugin, MethodCallHandler, ActivityA
 
   @Override
   public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    AdxNativeAdFactory.removeListener(mNativeAdFactoryListener);
+    for (String adUnitId : new ArrayList<>(mNativeAdContainers.keySet())) {
+      destroyNativeAd(adUnitId);
+    }
+
     defaultChannel.setMethodCallHandler(null);
     context = null;
   }

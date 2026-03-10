@@ -48,3 +48,17 @@ class RewardedAdListener {
     required this.onAdFailedToShow
   });
 }
+
+class NativeAdListener {
+  void Function() onAdLoaded;
+  void Function(int errorCode) onAdError;
+  void Function() onAdImpression;
+  void Function() onAdClicked;
+
+  NativeAdListener({
+    required this.onAdLoaded,
+    required this.onAdError,
+    required this.onAdImpression,
+    required this.onAdClicked,
+  });
+}

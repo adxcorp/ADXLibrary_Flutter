@@ -13,6 +13,7 @@ class AdxSdk {
   static BannerListener? _bannerListener;
   static InterstitialAdListener? _interstitialAdListener;
   static RewardedAdListener? _rewardedAdListener;
+  static NativeAdListener? _nativeAdListener;
 
   AdxSdk();
 
@@ -59,6 +60,16 @@ class AdxSdk {
         _rewardedAdListener?.onAdClosed();
       } else if (method == "RewardedAd_onAdFailedToShow") {
         _rewardedAdListener?.onAdFailedToShow();
+      }
+
+      if (method == "NativeAd_onAdLoaded") {
+        _nativeAdListener?.onAdLoaded();
+      } else if (method == "NativeAd_onAdError") {
+        _nativeAdListener?.onAdError(arguments['error_code']);
+      } else if (method == "NativeAd_onAdImpression") {
+        _nativeAdListener?.onAdImpression();
+      } else if (method == "NativeAd_onAdClicked") {
+        _nativeAdListener?.onAdClicked();
       }
     });
 
@@ -151,6 +162,31 @@ class AdxSdk {
     });
   }
 
+  static void setNativeAdPosition(String adUnitId, String position) {
+    channel.invokeMethod('setNativeAdPosition', {
+      'ad_unit_id': adUnitId,
+      'position': position
+    });
+  }
+
+  static void loadNativeAd(String adUnitId) {
+    channel.invokeMethod('loadNativeAd', {
+      'ad_unit_id': adUnitId,
+    });
+  }
+
+  static void destroyNativeAd(String adUnitId) {
+    channel.invokeMethod('destroyNativeAd', {
+      'ad_unit_id': adUnitId,
+    });
+  }
+
+  static Future<bool?> isNativeAdLoaded(String adUnitId) {
+    return channel.invokeMethod('isNativeAdLoaded', {
+      'ad_unit_id': adUnitId,
+    });
+  }
+
   static void setBannerListener(BannerListener bannerListener) {
     _bannerListener = bannerListener;
   }
@@ -161,5 +197,9 @@ class AdxSdk {
 
   static void setRewardedAdListener(RewardedAdListener rewardedAdListener) {
     _rewardedAdListener = rewardedAdListener;
+  }
+
+  static void setNativeAdListener(NativeAdListener nativeAdListener) {
+    _nativeAdListener = nativeAdListener;
   }
 }
