@@ -46,6 +46,8 @@ android {
         implementation "com.github.adxcorp.ADXLibrary_Android:adx-library-standard:2.8.0"
         // 리워드 비디오만 포함할 경우
         implementation "com.github.adxcorp.ADXLibrary_Android:adx-library-rewarded-video:2.8.0"
+        // 네이티브 광고 포함
+        implementation "com.github.adxcorp.ADXLibrary_Android:adx-library-native:2.8.0"
     }
 
     testOptions {
