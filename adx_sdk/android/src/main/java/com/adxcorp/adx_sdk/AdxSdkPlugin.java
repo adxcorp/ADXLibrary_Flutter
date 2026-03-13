@@ -60,10 +60,10 @@ public class AdxSdkPlugin implements FlutterPlugin, MethodCallHandler, ActivityA
 
     context = flutterPluginBinding.getApplicationContext();
     flutterPluginBinding
-        .getPlatformViewRegistry()
-        .registerViewFactory(
-            "adx_sdk/native_ad_view",
-            new AdxSdkNativeAdViewFactory(flutterPluginBinding.getBinaryMessenger()));
+            .getPlatformViewRegistry()
+            .registerViewFactory(
+                    "adx_sdk/native_ad_view",
+                    new AdxSdkNativeAdViewFactory(flutterPluginBinding.getBinaryMessenger()));
   }
 
   @Override

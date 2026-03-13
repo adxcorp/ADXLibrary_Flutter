@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
     'Banner Ad': (context) => const AdxBanner(),
     'Interstitial Ad': (context) => const AdxInterstitialAd(),
     'Rewarded Ad': (context) => const AdxRewardedAd(),
-    'Native Ad': (context) => const AdxTestNativeAdView(adUnitId: '61ee3ae4cb8c670001000038'),
+    'Native Ad': (context) => const AdxTestNativeAdView(adUnitId: '61ee2ea2cb8c670001000030'), // ios : 61ee3ae4cb8c670001000038
     'Native Ad With AppLovin MAX': (context) => NativeAdView(
         adUnitId: Platform.isAndroid ? "29bb8c3647d905ad" : "48decfe1e3ed88a8"
     ),

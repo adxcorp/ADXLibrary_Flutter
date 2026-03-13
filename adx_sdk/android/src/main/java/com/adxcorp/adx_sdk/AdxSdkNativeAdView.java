@@ -245,7 +245,7 @@ public class AdxSdkNativeAdView implements PlatformView, MethodCallHandler, AdxN
       ((ViewGroup) nativeAdView).addView(view);
     }
 
-    FrameLayout.LayoutParams params = buildLayoutParams(call);
+    ViewGroup.MarginLayoutParams params = buildLayoutParams(view, call);
     view.setLayoutParams(params);
     view.setVisibility(View.VISIBLE);
 
@@ -254,12 +254,20 @@ public class AdxSdkNativeAdView implements PlatformView, MethodCallHandler, AdxN
     }
   }
 
-  private FrameLayout.LayoutParams buildLayoutParams(MethodCall call) {
+  private ViewGroup.MarginLayoutParams buildLayoutParams(View view, MethodCall call) {
     int x = getIntArg(call, "x");
     int y = getIntArg(call, "y");
     int width = getIntArg(call, "width");
     int height = getIntArg(call, "height");
-    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(width, height);
+    ViewGroup.LayoutParams existing = view.getLayoutParams();
+    ViewGroup.MarginLayoutParams params;
+    if (existing instanceof ViewGroup.MarginLayoutParams) {
+      params = (ViewGroup.MarginLayoutParams) existing;
+      params.width = width;
+      params.height = height;
+    } else {
+      params = new ViewGroup.MarginLayoutParams(width, height);
+    }
     params.leftMargin = x;
     params.topMargin = y;
     return params;
