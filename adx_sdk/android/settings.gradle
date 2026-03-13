@@ -1,1 +1,58 @@
 rootProject.name = 'adx_sdk'
+
+include ':adx-library'
+include ':adx-library:adx-library-base'
+include ':adx-library:adx-library-native'
+include ':adx-library:adx-library-rewarded-video'
+include ':adx-library:adx-library-standard'
+include ':adx-library:adx-library-pangle'
+include ':adx-library:adx-library-cauly'
+include ':adx-library:adx-library-fyber'
+include ':adx-library:adx-library-unityads'
+// include ':adx-library:adx-library-mintegral'
+include ':adx-library:adx-library-tnk'
+// include ':adx-library:adx-library-coupang'
+include ':adx-library:adx-library-moloco'
+include ':adx-library:adx-library-lite'
+
+project(':adx-library').projectDir =
+        new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library')
+
+project(':adx-library:adx-library-base').projectDir =
+        new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library/adx-library-base')
+
+project(':adx-library:adx-library-native').projectDir =
+        new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library/adx-library-native')
+
+project(':adx-library:adx-library-rewarded-video').projectDir =
+        new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library/adx-library-rewarded-video')
+
+project(':adx-library:adx-library-standard').projectDir =
+        new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library/adx-library-standard')
+//
+project(':adx-library:adx-library-pangle').projectDir =
+        new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library/adx-library-pangle')
+//
+project(':adx-library:adx-library-cauly').projectDir =
+        new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library/adx-library-cauly')
+
+project(':adx-library:adx-library-fyber').projectDir =
+        new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library/adx-library-fyber')
+//
+project(':adx-library:adx-library-unityads').projectDir =
+        new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library/adx-library-unityads')
+//
+// project(':adx-library:adx-library-mintegral').projectDir =
+//         new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library/adx-library-mintegral')
+
+project(':adx-library:adx-library-tnk').projectDir =
+        new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library/adx-library-tnk')
+
+// project(':adx-library:adx-library-coupang').projectDir =
+//         new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library/adx-library-coupang')
+
+project(':adx-library:adx-library-moloco').projectDir =
+        new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library/adx-library-moloco')
+
+project(':adx-library:adx-library-lite').projectDir =
+        new File('/Users/neptune/AndroidStudioProjects/ADXLibrary_Android/adx-library/adx-library-lite')
