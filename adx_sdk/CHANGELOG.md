@@ -1,3 +1,6 @@
+## 1.0.9
+* Android SDK 2.8.2 업데이트
+* iOS SDK 2.8.5 업데이트
 ## 1.0.8
 * Android SDK 2.8.0 업데이트
 * iOS SDK 2.8.1 업데이트
