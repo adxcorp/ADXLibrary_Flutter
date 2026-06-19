@@ -25,7 +25,7 @@ class _AdxInterstitialAd extends State<AdxInterstitialAd>{
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   AdxSdk.setInterstitialListener(InterstitialAdListener(
                       onAdLoaded: (){
                         debugPrint("AdxSample InterstitialAd - onAdLoaded");
@@ -46,7 +46,11 @@ class _AdxInterstitialAd extends State<AdxInterstitialAd>{
                         debugPrint("AdxSample InterstitialAd - onAdFailedToShow");
                       })
                   );
-
+                  bool isLoaded = (await AdxSdk.isInterstitialLoaded(adUnitId))!;
+                  if (isLoaded) {
+                    debugPrint("AdxSample InterstitialAd - Ad is already loaded.");
+                    return;
+                  }
                   AdxSdk.loadInterstitial(adUnitId);
                 },
                 child: const Text('Load'),

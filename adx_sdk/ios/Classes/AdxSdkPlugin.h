@@ -3,3 +3,4 @@
 
 @interface AdxSdkPlugin : NSObject<FlutterPlugin>
 @end
+

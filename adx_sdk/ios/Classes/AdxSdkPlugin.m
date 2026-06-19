@@ -1,439 +1,499 @@
 #import "AdxSdkPlugin.h"
 
-@interface AdxSdkPlugin()<ADXAdViewDelegate, ADXInterstitialAdDelegate, ADXRewardedAdDelegate>
-
-@property (nonatomic, strong) NSMutableDictionary<NSString *, ADXAdView *> *adViews;
-@property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *adViewPositions;
-@property (nonatomic, strong) NSMutableDictionary<NSString *, NSArray<NSLayoutConstraint *> *> *adViewConstraints;
-@property (nonatomic, strong) NSMutableDictionary<NSString *, ADXInterstitialAd *> *interstitials;
-@property (nonatomic, strong) NSMutableDictionary<NSString *, ADXRewardedAd *> *rewardedAds;
-
-@property (nonatomic, strong) UIView *safeAreaBackground;
-
+@interface AdxSdkPlugin () <ADXAdViewDelegate, ADXInterstitialAdDelegate, ADXRewardedAdDelegate>
+@property(strong) NSMutableDictionary<NSString *, ADXAdView *> *adViews;
+@property(strong) NSMutableDictionary<NSString *, NSString *> *adViewPositions;
+@property(strong) NSMutableDictionary<NSString *, NSArray<NSLayoutConstraint *> *> *adViewConstraints;
+@property(strong) NSMutableDictionary<NSString *, ADXInterstitialAd *> *interstitials;
+@property(strong) NSMutableDictionary<NSString *, ADXRewardedAd *> *rewardedAds;
+@property(strong) UIView *safeAreaBackground;
+@property(strong) FlutterMethodChannel *channel;
+@property(strong) NSDictionary<NSString *, void (^)(FlutterMethodCall *, FlutterResult)> *methodHandlers;
 @end
 
 @implementation AdxSdkPlugin
 
-static FlutterMethodChannel *adxSdkChannel;
++ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
+    AdxSdkPlugin *instance = [[AdxSdkPlugin alloc] init];
+    instance.channel =
+            [FlutterMethodChannel methodChannelWithName:@"adx_sdk"
+                                        binaryMessenger:[registrar messenger]];
+    [registrar addMethodCallDelegate:instance channel:instance.channel];
+}
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.adViews = [NSMutableDictionary dictionaryWithCapacity: 2];
-        self.adViewPositions = [NSMutableDictionary dictionaryWithCapacity: 2];
-        self.adViewConstraints = [NSMutableDictionary dictionaryWithCapacity: 2];
-        self.interstitials = [NSMutableDictionary dictionaryWithCapacity: 2];
-        self.rewardedAds = [NSMutableDictionary dictionaryWithCapacity: 2];
+        _adViews = [NSMutableDictionary dictionary];
+        _adViewPositions = [NSMutableDictionary dictionary];
+        _adViewConstraints = [NSMutableDictionary dictionary];
+        _interstitials = [NSMutableDictionary dictionary];
+        _rewardedAds = [NSMutableDictionary dictionary];
+        _safeAreaBackground = [[UIView alloc] init];
+        _safeAreaBackground.hidden = YES;
+        _safeAreaBackground.userInteractionEnabled = NO;
+        _safeAreaBackground.translatesAutoresizingMaskIntoConstraints = NO;
 
-        self.safeAreaBackground = [[UIView alloc] init];
-        self.safeAreaBackground.hidden = YES;
-        self.safeAreaBackground.backgroundColor = UIColor.clearColor;
-        self.safeAreaBackground.translatesAutoresizingMaskIntoConstraints = NO;
-        self.safeAreaBackground.userInteractionEnabled = NO;
-
-        [[self topViewController].view addSubview:self.safeAreaBackground];
+        __weak typeof(self) weakSelf = self;
+        _methodHandlers = @{
+                @"initialize":^(FlutterMethodCall *c, FlutterResult r) {
+                    typeof(weakSelf) s = weakSelf; s ? [s handle_initialize:c result:r] : r(FlutterMethodNotImplemented);
+                },
+                @"isInitialized":^(FlutterMethodCall *c, FlutterResult r) {
+                    typeof(weakSelf) s = weakSelf; s ? [s handle_isInitialized:c result:r] : r(FlutterMethodNotImplemented);
+                },
+                @"setBannerPosition":^(FlutterMethodCall *c, FlutterResult r) {
+                    typeof(weakSelf) s = weakSelf; s ? [s handle_setBannerPosition:c result:r] : r(FlutterMethodNotImplemented);
+                },
+                @"loadBannerAd":^(FlutterMethodCall *c, FlutterResult r) {
+                    typeof(weakSelf) s = weakSelf; s ? [s handle_loadBannerAd:c result:r] : r(FlutterMethodNotImplemented);
+                },
+                @"destroyBannerAd":^(FlutterMethodCall *c, FlutterResult r) {
+                    typeof(weakSelf) s = weakSelf; s ? [s handle_destroyBannerAd:c result:r] : r(FlutterMethodNotImplemented);
+                },
+                @"loadInterstitial":^(FlutterMethodCall *c, FlutterResult r) {
+                    typeof(weakSelf) s = weakSelf; s ? [s handle_loadInterstitial:c result:r] : r(FlutterMethodNotImplemented);
+                },
+                @"isInterstitialLoaded": ^(FlutterMethodCall *c, FlutterResult r) {
+                    typeof(weakSelf) s = weakSelf; s ? [s handle_isInterstitialLoaded:c result:r] : r(FlutterMethodNotImplemented);
+                },
+                @"showInterstitial":^(FlutterMethodCall *c, FlutterResult r) {
+                    typeof(weakSelf) s = weakSelf; s ? [s handle_showInterstitial:c result:r] : r(FlutterMethodNotImplemented);
+                },
+                @"destroyInterstitial":^(FlutterMethodCall *c, FlutterResult r) {
+                    typeof(weakSelf) s = weakSelf; s ? [s handle_destroyInterstitial:c result:r] : r(FlutterMethodNotImplemented);
+                },
+                @"loadRewardedAd":^(FlutterMethodCall *c, FlutterResult r) {
+                    typeof(weakSelf) s = weakSelf; s ? [s handle_loadRewardedAd:c result:r] : r(FlutterMethodNotImplemented);
+                },
+                @"isRewardedAdLoaded":^(FlutterMethodCall *c, FlutterResult r) {
+                    typeof(weakSelf) s = weakSelf; s ? [s handle_isRewardedAdLoaded:c result:r] : r(FlutterMethodNotImplemented);
+                },
+                @"showRewardedAd":^(FlutterMethodCall *c, FlutterResult r) {
+                    typeof(weakSelf) s = weakSelf; s ? [s handle_showRewardedAd:c result:r] : r(FlutterMethodNotImplemented);
+                },
+                @"destroyRewardedAd":^(FlutterMethodCall *c, FlutterResult r) {
+                    typeof(weakSelf) s = weakSelf; s ? [s handle_destroyRewardedAd:c result:r] : r(FlutterMethodNotImplemented);
+                },
+        };
     }
     return self;
 }
 
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    adxSdkChannel = [FlutterMethodChannel
-            methodChannelWithName:@"adx_sdk"
-                  binaryMessenger:[registrar messenger]];
-    AdxSdkPlugin* instance = [[AdxSdkPlugin alloc] init];
-    [registrar addMethodCallDelegate:instance channel:adxSdkChannel];
-}
-
-- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-    NSLog(@"call.method : %@", call.method);
-
-    if ([@"initialize" isEqualToString: call.method]) {
-        NSString *appId = call.arguments[@"app_id"];
-        NSString *gdprType = call.arguments[@"gdpr_type"];
-        NSString *pluginVersion = call.arguments[@"plugin_version"];
-        NSArray *testDevices = call.arguments[@"test_devices"];
-
-        NSLog(@"ADX Flutter Version : %@, ADX SDK Version : %@, App ID : %@, GdprType : %@, TestDevices : %@",
-              pluginVersion, ADX_SDK_VERSION, appId, gdprType, testDevices);
-        
-        ADXGdprType adxGdprType = [self getGdprType:gdprType];
-
-        // ADX SDK Initialize
-        ADXConfiguration *configuration = [[ADXConfiguration alloc] initWithAppId:appId
-                                                                         gdprType:adxGdprType
-                                                                      testDevices:testDevices];
-        
-        configuration.logLevel = ADXLogLevelDebug;
-        [[ADXSdk sharedInstance] initializeWithConfiguration:configuration
-                                           completionHandler:^(BOOL resultFlag, ADXConsentState consentState) {
-            NSLog(@"ADX Sdk Initialize");
-            NSDictionary *data = @{@"result" : @(resultFlag), @"consent" : @(consentState)};
-            result(data);
-        }];
-    } else if ([@"isInitialized" isEqualToString: call.method]) {
-        BOOL isInitialized = [[ADXSdk sharedInstance] isInitialized];
-
-        result(@(isInitialized));
-    } else if ([@"setBannerPosition" isEqualToString: call.method]) {
-        NSString *adUnitId = call.arguments[@"ad_unit_id"];
-        NSString *position = call.arguments[@"position"];
-
-        self.adViewPositions[adUnitId] = position;
-        [self updatePositionAdView:adUnitId];
-
-        result(nil);
-    } else if ([@"loadBannerAd" isEqualToString: call.method]) {
-        NSString *adUnitId = call.arguments[@"ad_unit_id"];
-        NSString *size = call.arguments[@"size"];
-        ADXAdView *adView = [self retrieveAdViewForadUnitId:adUnitId withSize:size];
-        adView.delegate = self;
-
-        [self updatePositionAdView:adUnitId];
-        [adView loadAd];
-
-        result(nil);
-    } else if ([@"destroyBannerAd" isEqualToString: call.method]) {
-        NSString *adUnitId = call.arguments[@"ad_unit_id"];
-        ADXAdView *adView = self.adViews[adUnitId];
-        if (adView != nil) {
-            adView.delegate = nil;
-            [adView removeFromSuperview];
-        }
-        [self.adViews removeObjectForKey: adUnitId];
-        [self.adViewPositions removeObjectForKey: adUnitId];
-        [self.adViewConstraints removeObjectForKey: adUnitId];
-
-        result(nil);
-    } else if ([@"loadInterstitial" isEqualToString: call.method]) {
-        ADXInterstitialAd *interstitial = [self retrieveInterstitialForadUnitId:call.arguments[@"ad_unit_id"]];
-        interstitial.delegate = self;
-        [interstitial loadAd];
-        result(nil);
-    } else if ([@"isInterstitialLoaded" isEqualToString: call.method]) {
-        ADXInterstitialAd *interstitial = [self retrieveInterstitialForadUnitId:call.arguments[@"ad_unit_id"]];
-        if (interstitial && interstitial.isLoaded) {
-            result(@(YES));
-        } else {
-            result(@(NO));
-        }
-    } else if ([@"showInterstitial" isEqualToString: call.method]) {
-        ADXInterstitialAd *interstitial = [self retrieveInterstitialForadUnitId:call.arguments[@"ad_unit_id"]];
-        if (interstitial.isLoaded) {
-            [interstitial showAdFromRootViewController: [self topViewController]];
-        }
-        result(nil);
-    } else if ([@"destroyInterstitial" isEqualToString: call.method]) {
-        NSString *adUnitId = call.arguments[@"ad_unit_id"];
-        ADXInterstitialAd *interstitial = self.interstitials[adUnitId];
-        if (!interstitial) {
-            interstitial.delegate = nil;
-        }
-
-        [self.interstitials removeObjectForKey: adUnitId];
-        result(nil);
-    } else if ([@"loadRewardedAd" isEqualToString: call.method]) {
-        ADXRewardedAd *rewardedAd = [self retrieveRewardedAdForadUnitId:call.arguments[@"ad_unit_id"]];
-        rewardedAd.delegate = self;
-        NSString * userId = call.arguments[@"user_id"] ?: @"";;
-        if([userId length]) {
-            [rewardedAd setSSVOptionWithUserId:userId];
-        }
-        NSString * customData = call.arguments[@"custom_data"] ?: @"";;
-        if([customData length]) {
-            [rewardedAd setSSVOptionWithCustomData:customData];
-        }
-        [rewardedAd loadAd];
-        result(nil);
-    } else if ([@"isRewardedAdLoaded" isEqualToString: call.method]) {
-        ADXRewardedAd *rewardedAd = [self retrieveRewardedAdForadUnitId:call.arguments[@"ad_unit_id"]];
-        if (rewardedAd && rewardedAd.isLoaded) {
-            result(@(YES));
-        } else {
-            result(@(NO));
-        }
-    } else if ([@"showRewardedAd" isEqualToString: call.method]) {
-        ADXRewardedAd *rewardedAd = [self retrieveRewardedAdForadUnitId:call.arguments[@"ad_unit_id"]];
-        if (rewardedAd.isLoaded) {
-            NSString * userId = call.arguments[@"user_id"] ?: @"";;
-            if([userId length]) {
-                [rewardedAd setSSVOptionWithUserId:userId];
-            }
-            NSString * customData = call.arguments[@"custom_data"] ?: @"";;
-            if([customData length]) {
-                [rewardedAd setSSVOptionWithCustomData:customData];
-            }
-            [rewardedAd showAdFromRootViewController: [self topViewController]];
-        }
-        result(nil);
-    } else if ([@"destroyRewardedAd" isEqualToString: call.method]) {
-        NSString *adUnitId = call.arguments[@"ad_unit_id"];
-        ADXRewardedAd *rewardedAd = self.rewardedAds[adUnitId];
-        if (!rewardedAd) {
-            rewardedAd.delegate = nil;
-        }
-
-        [self.rewardedAds removeObjectForKey: adUnitId];
-        result(nil);
-    }
-}
-
-- (ADXGdprType)getGdprType:(NSString *) gdprType {
-    if ([@"popup_debug" isEqualToString:gdprType]) {
-        return ADXGdprTypePopupDebug;
-    } else if ([@"popup_location" isEqualToString:gdprType]) {
-        return ADXGdprTypePopupLocation;
-    } else if ([@"direct_not_required" isEqualToString:gdprType]) {
-        return ADXGdprTypeDirectNotRequired;
-    } else if ([@"direct_denied" isEqualToString:gdprType]) {
-        return ADXGdprTypeDirectDenied;
-    } else if ([@"direct_confirm" isEqualToString:gdprType]) {
-        return ADXGdprTypeDirectConfirm;
-    } else if ([@"direct_unknown" isEqualToString:gdprType]) {
-        return ADXGdprTypeDirectUnknown;
+- (void)handleMethodCall:(FlutterMethodCall *)call
+                  result:(FlutterResult)result {
+    void (^handler)(FlutterMethodCall *, FlutterResult) =
+    self.methodHandlers[call.method];
+    if (handler) {
+        handler(call, result);
     } else {
-        [NSException raise: NSInvalidArgumentException format: @"Invalid GdprType"];
-        return ADXGdprTypeDirectUnknown;
+        result(FlutterMethodNotImplemented);
     }
 }
 
-- (ADXAdView *)retrieveAdViewForadUnitId:(NSString *)adUnitId withSize:(NSString *) size {
-    ADXAdView *result = self.adViews[adUnitId];
-    if (!result) {
-        CGSize bannerSize = [self adViewSize:size];
-        result = [[ADXAdView alloc] initWithAdUnitId:adUnitId adSize:ADXAdSizeBanner rootViewController:result.rootViewController];
+#pragma mark - Method Handlers
 
-        result.userInteractionEnabled = NO;
-        result.translatesAutoresizingMaskIntoConstraints = NO;
+- (void)handle_initialize:(FlutterMethodCall *)call
+                   result:(FlutterResult)result {
+    NSString *appId = call.arguments[@"app_id"];
+    NSArray *testDevices = call.arguments[@"test_devices"];
+    ADXGdprType gdpr = [self getGdprType:call.arguments[@"gdpr_type"]];
 
-        result.frame = CGRectMake(0, 0, bannerSize.width, bannerSize.height);
+    ADXConfiguration *config =
+            [[ADXConfiguration alloc] initWithAppId:appId
+                                           gdprType:gdpr
+                                        testDevices:testDevices];
+#ifdef DEBUG
+    config.logLevel = ADXLogLevelDebug;
+#else
+    config.logLevel = ADXLogLevelNone;
+#endif
 
-        self.adViews[adUnitId] = result;
-
-        result.rootViewController = [self topViewController];
-        [result.rootViewController.view addSubview:result];
-    }
-
-    return result;
+    [[ADXSdk sharedInstance]
+            initializeWithConfiguration:config
+                      completionHandler:^(BOOL resultFlag,
+                                          ADXConsentState consentState) {
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                              result(@{
+                                             @"result" : @(resultFlag),
+                                             @"consent" : @(consentState)
+                                     });
+                          });
+                      }];
 }
 
-- (void) updatePositionAdView:(NSString *)adUnitId {
-    if (!adUnitId) {
+- (void)handle_isInitialized:(FlutterMethodCall *)call
+                      result:(FlutterResult)result {
+    result(@([[ADXSdk sharedInstance] isInitialized]));
+}
+
+- (void)handle_setBannerPosition:(FlutterMethodCall *)call
+                          result:(FlutterResult)result {
+    NSString *adUnitId = call.arguments[@"ad_unit_id"];
+    self.adViewPositions[adUnitId] = call.arguments[@"position"];
+    [self updatePositionAdView:adUnitId];
+    result(nil);
+}
+
+- (void)handle_loadBannerAd:(FlutterMethodCall *)call
+                     result:(FlutterResult)result {
+    NSString *adUnitId = call.arguments[@"ad_unit_id"];
+    NSString *size = call.arguments[@"size"];
+    if (CGSizeEqualToSize([self adViewSize:size], CGSizeZero)) {
+        result([FlutterError
+                       errorWithCode:@"invalid_size"
+                             message:[NSString
+                                     stringWithFormat:@"Unsupported banner size: %@", size]
+                             details:nil]);
         return;
     }
-
-    ADXAdView *adView = self.adViews[adUnitId];
-    NSString *position = self.adViewPositions[adUnitId];
-
+    ADXAdView *adView = [self retrieveAdView:adUnitId size:size];
     if (!adView) {
+        result([FlutterError errorWithCode:@"no_view_controller"
+                                   message:@"No active view controller"
+                                   details:nil]);
         return;
     }
+    adView.delegate = self;
+    [self updatePositionAdView:adUnitId];
+    [adView loadAd];
+    result(nil);
+}
 
+- (void)handle_destroyBannerAd:(FlutterMethodCall *)call
+                        result:(FlutterResult)result {
+    NSString *adUnitId = call.arguments[@"ad_unit_id"];
+    ADXAdView *adView = self.adViews[adUnitId];
+    if (adView) {
+        adView.delegate = nil;
+        [NSLayoutConstraint deactivateConstraints:self.adViewConstraints[adUnitId]];
+        [adView removeFromSuperview];
+        [self.adViews removeObjectForKey:adUnitId];
+        [self.adViewPositions removeObjectForKey:adUnitId];
+        [self.adViewConstraints removeObjectForKey:adUnitId];
+        if (self.adViews.count == 0) {
+            [self.safeAreaBackground removeFromSuperview];
+            self.safeAreaBackground.hidden = YES;
+        }
+    }
+    result(nil);
+}
+
+- (void)handle_loadInterstitial:(FlutterMethodCall *)call
+                         result:(FlutterResult)result {
+    ADXInterstitialAd *ad = [self retrieveInterstitial:call.arguments[@"ad_unit_id"]];
+    ad.delegate = self;
+    [ad loadAd];
+    result(nil);
+}
+
+- (void)handle_isInterstitialLoaded:(FlutterMethodCall *)call
+                             result:(FlutterResult)result {
+    ADXInterstitialAd *ad = self.interstitials[call.arguments[@"ad_unit_id"]];
+    result(ad != nil && ad.isLoaded ? @YES : @NO);
+}
+
+- (void)handle_showInterstitial:(FlutterMethodCall *)call
+                         result:(FlutterResult)result {
+    ADXInterstitialAd *ad = self.interstitials[call.arguments[@"ad_unit_id"]];
+    if (ad.isLoaded) {
+        UIViewController *rootVC = [self topViewController];
+        if (rootVC) {
+            [ad showAdFromRootViewController:rootVC];
+        } else {
+            NSError *error = [NSError errorWithDomain:@"AdxSdk" code:-1
+                                             userInfo:@{NSLocalizedDescriptionKey: @"No active view controller"}];
+            [self interstitialAd:ad didFailToShowWithError:error];
+        }
+    }
+    result(nil);
+}
+
+- (void)handle_destroyInterstitial:(FlutterMethodCall *)call
+                            result:(FlutterResult)result {
+    // interstitials에서 객체를 제거해도 얻는 메모리 이득이 미미하고,
+    // 제거 후 재로드 시 객체 재생성 타이밍에 따른 사이드 이펙트가 발생할 수 있어
+    // 호환성 유지 목적으로 메서드는 남기되 아무 작업도 하지 않음.
+    result(nil);
+}
+
+- (void)handle_loadRewardedAd:(FlutterMethodCall *)call
+                       result:(FlutterResult)result {
+    NSString *adUnitId = call.arguments[@"ad_unit_id"];
+    ADXRewardedAd *ad = [self retrieveRewardedAd:adUnitId];
+    ad.delegate = self;
+    NSString *userId = call.arguments[@"user_id"];
+    NSString *customData = call.arguments[@"custom_data"];
+    if (userId.length)
+        [ad setSSVOptionWithUserId:userId];
+    if (customData.length)
+        [ad setSSVOptionWithCustomData:customData];
+    [ad loadAd];
+    result(nil);
+}
+
+- (void)handle_isRewardedAdLoaded:(FlutterMethodCall *)call
+                           result:(FlutterResult)result {
+    ADXRewardedAd *ad = self.rewardedAds[call.arguments[@"ad_unit_id"]];
+    result(ad != nil && ad.isLoaded ? @YES : @NO);
+}
+
+- (void)handle_showRewardedAd:(FlutterMethodCall *)call
+                       result:(FlutterResult)result {
+    ADXRewardedAd *ad = self.rewardedAds[call.arguments[@"ad_unit_id"]];
+    if (ad.isLoaded) {
+        NSString *userId = call.arguments[@"user_id"];
+        NSString *customData = call.arguments[@"custom_data"];
+        if (userId.length)
+            [ad setSSVOptionWithUserId:userId];
+        if (customData.length)
+            [ad setSSVOptionWithCustomData:customData];
+        UIViewController *rootVC = [self topViewController];
+        if (rootVC) {
+            [ad showAdFromRootViewController:rootVC];
+        } else {
+            NSError *error = [NSError errorWithDomain:@"AdxSdk" code:-1
+                                             userInfo:@{NSLocalizedDescriptionKey: @"No active view controller"}];
+            [self rewardedAd:ad didFailToShowWithError:error];
+        }
+    }
+    result(nil);
+}
+
+- (void)handle_destroyRewardedAd:(FlutterMethodCall *)call
+                          result:(FlutterResult)result {
+    // rewardedAds에서 객체를 제거해도 얻는 메모리 이득이 미미하고,
+    // 제거 후 재로드 시 객체 재생성 타이밍에 따른 사이드 이펙트가 발생할 수 있어
+    // 호환성 유지 목적으로 메서드는 남기되 아무 작업도 하지 않음.
+    result(nil);
+}
+
+#pragma mark - Helpers
+
+- (ADXGdprType)getGdprType:(NSString *)type {
+    NSDictionary *types = @{
+            @"popup_debug" : @(ADXGdprTypePopupDebug),
+            @"popup_location" : @(ADXGdprTypePopupLocation),
+            @"direct_not_required" : @(ADXGdprTypeDirectNotRequired),
+            @"direct_denied" : @(ADXGdprTypeDirectDenied),
+            @"direct_confirm" : @(ADXGdprTypeDirectConfirm),
+            @"direct_unknown" : @(ADXGdprTypeDirectUnknown)
+    };
+    return types[type] ? [types[type] integerValue] : ADXGdprTypeDirectUnknown;
+}
+
+- (ADXAdView *)retrieveAdView:(NSString *)adUnitId size:(NSString *)size {
+    if (!self.adViews[adUnitId]) {
+        UIViewController *rootVC = [self topViewController];
+        if (!rootVC)
+            return nil;
+        CGSize bannerSize = [self adViewSize:size];
+        ADXAdView *view = [[ADXAdView alloc] initWithAdUnitId:adUnitId
+                                                       adSize:ADXAdSizeBanner
+                                           rootViewController:rootVC];
+        view.translatesAutoresizingMaskIntoConstraints = NO;
+        view.frame = CGRectMake(0, 0, bannerSize.width, bannerSize.height);
+        self.adViews[adUnitId] = view;
+        [rootVC.view addSubview:view];
+    }
+    return self.adViews[adUnitId];
+}
+
+- (void)updatePositionAdView:(NSString *)adUnitId {
+    ADXAdView *adView = self.adViews[adUnitId];
+    if (!adView)
+        return;
     UIView *superview = adView.superview;
-    if (!superview) {
+    if (!superview)
         return;
-    }
 
-    NSArray<NSLayoutConstraint *> *activeConstraints = self.adViewConstraints[adUnitId];
-    [NSLayoutConstraint deactivateConstraints: activeConstraints];
+    [NSLayoutConstraint deactivateConstraints:self.adViewConstraints[adUnitId]];
 
-    if (![superview.subviews containsObject: self.safeAreaBackground]) {
+    if (![superview.subviews containsObject:self.safeAreaBackground]) {
         [self.safeAreaBackground removeFromSuperview];
-        [superview insertSubview: self.safeAreaBackground belowSubview: adView];
+        [superview insertSubview:self.safeAreaBackground belowSubview:adView];
     }
-
-    [NSLayoutConstraint deactivateConstraints: self.safeAreaBackground.constraints];
     self.safeAreaBackground.hidden = NO;
 
-    CGSize adViewSize = adView.bounds.size;
-
-    NSMutableArray<NSLayoutConstraint *> *constraints = [NSMutableArray arrayWithObject:
-            [adView.heightAnchor constraintEqualToConstant: adViewSize.height]];
-
-    UILayoutGuide *layoutGuide;
+    UILayoutGuide *guide;
     if (@available(iOS 11.0, *)) {
-        layoutGuide = superview.safeAreaLayoutGuide;
+        guide = superview.safeAreaLayoutGuide;
     } else {
-        layoutGuide = superview.layoutMarginsGuide;
+        guide = superview.layoutMarginsGuide;
     }
+    NSString *pos = self.adViewPositions[adUnitId] ?: @"bottom_center";
 
-    if (!position) {
-        position = @"bottom_center";
-    }
+    NSMutableArray *constraints = [NSMutableArray array];
+    [constraints addObject:[adView.widthAnchor constraintEqualToConstant:adView.bounds.size.width]];
+    [constraints addObject:[adView.heightAnchor constraintEqualToConstant:adView.bounds.size.height]];
 
-    NSLog(@"AdView position : %@", position);
+    NSDictionary *posMap = @{
+            @"top_center" : @[ guide.topAnchor, guide.centerXAnchor ],
+            @"top_left" : @[ guide.topAnchor, superview.leftAnchor ],
+            @"top_right" : @[ guide.topAnchor, superview.rightAnchor ],
+            @"center" : @[ guide.centerYAnchor, guide.centerXAnchor ],
+            @"center_left" : @[ guide.centerYAnchor, superview.leftAnchor ],
+            @"center_right" : @[ guide.centerYAnchor, superview.rightAnchor ],
+            @"bottom_center" : @[ guide.bottomAnchor, guide.centerXAnchor ],
+            @"bottom_left" : @[ guide.bottomAnchor, superview.leftAnchor ],
+            @"bottom_right" : @[ guide.bottomAnchor, superview.rightAnchor ]
+    };
 
-    [constraints addObject: [adView.widthAnchor constraintEqualToConstant: adViewSize.width]];
+    NSArray *anchors = posMap[pos] ?: posMap[@"bottom_center"];
+    NSLayoutAnchor *yAnchor = anchors[0];
+    NSLayoutAnchor *xAnchor = anchors[1];
 
-    if ([@"top_center" isEqualToString:position]) {
-        [constraints addObject: [adView.centerXAnchor constraintEqualToAnchor: layoutGuide.centerXAnchor]];
-        [constraints addObject: [adView.topAnchor constraintEqualToAnchor: layoutGuide.topAnchor]];
-    } else if ([@"top_left" isEqualToString:position]) {
-        [constraints addObject: [adView.topAnchor constraintEqualToAnchor: layoutGuide.topAnchor]];
-        [constraints addObject: [adView.leftAnchor constraintEqualToAnchor: superview.leftAnchor]];
-    } else if ([@"top_right" isEqualToString:position]) {
-        [constraints addObject: [adView.topAnchor constraintEqualToAnchor: layoutGuide.topAnchor]];
-        [constraints addObject: [adView.rightAnchor constraintEqualToAnchor: superview.rightAnchor]];
-    } else if ([@"center" isEqualToString:position]) {
-        [constraints addObject: [adView.centerXAnchor constraintEqualToAnchor: layoutGuide.centerXAnchor]];
-        [constraints addObject: [adView.centerYAnchor constraintEqualToAnchor: layoutGuide.centerYAnchor]];
-    } else if ([@"center_left" isEqualToString:position]) {
-        [constraints addObject: [adView.leftAnchor constraintEqualToAnchor: superview.leftAnchor]];
-        [constraints addObject: [adView.centerYAnchor constraintEqualToAnchor: layoutGuide.centerYAnchor]];
-    } else if ([@"center_right" isEqualToString:position]) {
-        [constraints addObject: [adView.rightAnchor constraintEqualToAnchor: superview.rightAnchor]];
-        [constraints addObject: [adView.centerYAnchor constraintEqualToAnchor: layoutGuide.centerYAnchor]];
-    } else if ([@"bottom_center" isEqualToString:position]) {
-        [constraints addObject: [adView.centerXAnchor constraintEqualToAnchor: layoutGuide.centerXAnchor]];
-        [constraints addObject: [adView.bottomAnchor constraintEqualToAnchor: layoutGuide.bottomAnchor]];
-    } else if ([@"bottom_left" isEqualToString:position]) {
-        [constraints addObject: [adView.leftAnchor constraintEqualToAnchor: superview.leftAnchor]];
-        [constraints addObject: [adView.bottomAnchor constraintEqualToAnchor: layoutGuide.bottomAnchor]];
-    } else if ([@"bottom_right" isEqualToString:position]) {
-        [constraints addObject: [adView.rightAnchor constraintEqualToAnchor: superview.rightAnchor]];
-        [constraints addObject: [adView.bottomAnchor constraintEqualToAnchor: layoutGuide.bottomAnchor]];
-    } else {
-        [constraints addObject: [adView.centerXAnchor constraintEqualToAnchor: layoutGuide.centerXAnchor]];
-        [constraints addObject: [adView.bottomAnchor constraintEqualToAnchor: layoutGuide.bottomAnchor]];
-    }
+    if ([pos containsString:@"top"])
+        [constraints addObject:[adView.topAnchor constraintEqualToAnchor:yAnchor]];
+    else if ([pos containsString:@"bottom"])
+        [constraints addObject:[adView.bottomAnchor constraintEqualToAnchor:yAnchor]];
+    else
+        [constraints addObject:[adView.centerYAnchor constraintEqualToAnchor:yAnchor]];
+
+    if ([pos containsString:@"left"])
+        [constraints addObject:[adView.leftAnchor constraintEqualToAnchor:xAnchor]];
+    else if ([pos containsString:@"right"])
+        [constraints addObject:[adView.rightAnchor constraintEqualToAnchor:xAnchor]];
+    else
+        [constraints addObject:[adView.centerXAnchor constraintEqualToAnchor:xAnchor]];
 
     self.adViewConstraints[adUnitId] = constraints;
-
-    [NSLayoutConstraint activateConstraints: constraints];
+    [NSLayoutConstraint activateConstraints:constraints];
 }
 
-- (ADXInterstitialAd *)retrieveInterstitialForadUnitId:(NSString *)adUnitId {
-    ADXInterstitialAd *result = self.interstitials[adUnitId];
-    if (!result) {
-        result = [[ADXInterstitialAd alloc] initWithAdUnitId:adUnitId];
-        self.interstitials[adUnitId] = result;
+- (ADXInterstitialAd *)retrieveInterstitial:(NSString *)adUnitId {
+    if (!self.interstitials[adUnitId])
+        self.interstitials[adUnitId] = [[ADXInterstitialAd alloc] initWithAdUnitId:adUnitId];
+    return self.interstitials[adUnitId];
+}
+
+- (ADXRewardedAd *)retrieveRewardedAd:(NSString *)adUnitId {
+    if (!self.rewardedAds[adUnitId])
+        self.rewardedAds[adUnitId] = [[ADXRewardedAd alloc] initWithAdUnitId:adUnitId];
+    return self.rewardedAds[adUnitId];
+}
+
+- (UIViewController *)topViewController {
+    UIWindow *window = nil;
+    if (@available(iOS 13.0, *)) {
+        for (UIWindowScene *scene in [UIApplication sharedApplication].connectedScenes) {
+            if (scene.activationState == UISceneActivationStateForegroundActive) {
+                if (@available(iOS 15.0, *)) {
+                    window = scene.keyWindow;
+                } else {
+                    for (UIWindow *w in scene.windows) {
+                        if (w.isKeyWindow) { window = w; break; }
+                    }
+                }
+                if (!window) window = scene.windows.firstObject;
+                break;
+            }
+        }
     }
-
-    return result;
+    if (!window)
+        window = [UIApplication sharedApplication].keyWindow;
+    return [self topViewControllerWithRoot:window.rootViewController];
 }
 
-- (ADXRewardedAd *)retrieveRewardedAdForadUnitId:(NSString *)adUnitId {
-    ADXRewardedAd *result = self.rewardedAds[adUnitId];
-    if (!result) {
-        result = [[ADXRewardedAd alloc] initWithAdUnitId:adUnitId];
-        self.rewardedAds[adUnitId] = result;
-    }
-
-    return result;
+- (UIViewController *)topViewControllerWithRoot:(UIViewController *)root {
+    if (!root)
+        return nil;
+    if ([root isKindOfClass:[UITabBarController class]])
+        return [self topViewControllerWithRoot:((UITabBarController *)root)
+                .selectedViewController];
+    if ([root isKindOfClass:[UINavigationController class]])
+        return [self topViewControllerWithRoot:((UINavigationController *)root)
+                .visibleViewController];
+    if (root.presentedViewController)
+        return [self topViewControllerWithRoot:root.presentedViewController];
+    return root;
 }
 
-- (UIViewController*)topViewController {
-    return [self topViewControllerWithRootViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
+- (CGSize)adViewSize:(NSString *)size {
+    NSDictionary *sizes = @{
+            @"320x50" : [NSValue valueWithCGSize:CGSizeMake(320, 50)],
+            @"320x100" : [NSValue valueWithCGSize:CGSizeMake(320, 100)],
+            @"300x250" : [NSValue valueWithCGSize:CGSizeMake(300, 250)],
+            @"320x480" : [NSValue valueWithCGSize:CGSizeMake(320, 480)]
+    };
+    return sizes[size] ? [sizes[size] CGSizeValue] : CGSizeZero;
 }
 
-- (UIViewController*)topViewControllerWithRootViewController:(UIViewController*)rootViewController {
-    if ([rootViewController isKindOfClass:[UITabBarController class]]) {
-        UITabBarController* tabBarController = (UITabBarController*)rootViewController;
-        return [self topViewControllerWithRootViewController:tabBarController.selectedViewController];
-    } else if ([rootViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController* navigationController = (UINavigationController*)rootViewController;
-        return [self topViewControllerWithRootViewController:navigationController.visibleViewController];
-    } else if (rootViewController.presentedViewController) {
-        UIViewController* presentedViewController = rootViewController.presentedViewController;
-        return [self topViewControllerWithRootViewController:presentedViewController];
-    } else {
-        return rootViewController;
-    }
+#pragma mark - Delegates
+// Banner
+- (void)adViewDidLoad:(ADXAdView *)v {
+    [self.channel invokeMethod:@"BannerAd_onAdLoaded" arguments:nil];
 }
 
-- (CGSize)adViewSize:(NSString *)adSize {
-    if ([@"320x50" isEqualToString:adSize]) {
-        return CGSizeMake(320.0f, 50.0f);
-    } else if ([@"320x100" isEqualToString:adSize]) {
-        return CGSizeMake(320.0f, 100.0f);
-    } else if ([@"300x250" isEqualToString:adSize]) {
-        return CGSizeMake(300.0f, 250.0f);
-    } else if ([@"320x480" isEqualToString:adSize]) {
-        return CGSizeMake(320.0f, 480.0f);
-    } else {
-        [NSException raise: NSInvalidArgumentException format: @"Invalid ad format"];
-        return CGSizeZero;
-    }
+- (void)adView:(ADXAdView *)v didFailToLoadWithError:(NSError *)e {
+    [self.channel invokeMethod:@"BannerAd_onAdError"
+                     arguments:@{@"error_code" : @(e.code)}];
 }
 
-#pragma mark - ADXAdViewDelegate
-
-- (void)adViewDidLoad:(nonnull ADXAdView *)adView {
-    adView.userInteractionEnabled = YES;
-
-    [adxSdkChannel invokeMethod: @"BannerAd_onAdLoaded" arguments: nil];
+- (void)adViewDidClick:(ADXAdView *)v {
+    [self.channel invokeMethod:@"BannerAd_onAdClicked" arguments:nil];
 }
 
-- (void)adView:(nonnull ADXAdView *)adView didFailToLoadWithError:(nonnull NSError *)error {
-    NSDictionary *args = @{@"error_code" : [NSNumber numberWithLong:error.code]};
-
-    [adxSdkChannel invokeMethod: @"BannerAd_onAdError" arguments: args];
+// Interstitial
+- (void)interstitialAdDidLoad:(ADXInterstitialAd *)v {
+    [self.channel invokeMethod:@"Interstitial_onAdLoaded" arguments:nil];
 }
 
-#pragma mark - ADXInterstitialAdDelegate
-
-- (void)interstitialAdDidLoad:(ADXInterstitialAd *)interstitialAd {
-    [adxSdkChannel invokeMethod: @"Interstitial_onAdLoaded" arguments: nil];
+- (void)interstitialAd:(ADXInterstitialAd *)v didFailToLoadWithError:(NSError *)e {
+    [self.channel invokeMethod:@"Interstitial_onAdError"
+                     arguments:@{@"error_code" : @(e.code)}];
 }
 
-- (void)interstitialAd:(ADXInterstitialAd *)interstitialAd didFailToLoadWithError:(NSError *)error {
-    NSDictionary *args = @{@"error_code" : [NSNumber numberWithLong:error.code]};
-
-    [adxSdkChannel invokeMethod: @"Interstitial_onAdError" arguments: args];
+- (void)interstitialAd:(ADXInterstitialAd *)v didFailToShowWithError:(NSError *)e {
+    [self.channel invokeMethod:@"Interstitial_onAdFailedToShow" arguments:nil];
 }
 
-- (void)interstitialAd:(ADXInterstitialAd *)interstitialAd didFailToShowWithError:(NSError *)error {
-    [adxSdkChannel invokeMethod: @"Interstitial_onAdFailedToShow" arguments: nil];
+- (void)interstitialAdWillPresentScreen:(ADXInterstitialAd *)v {
+    [self.channel invokeMethod:@"Interstitial_onAdImpression" arguments:nil];
 }
 
-- (void)interstitialAdWillPresentScreen:(ADXInterstitialAd *)interstitialAd {
-    [adxSdkChannel invokeMethod: @"Interstitial_onAdImpression" arguments: nil];
+- (void)interstitialAdDidDismissScreen:(ADXInterstitialAd *)v {
+    [self.channel invokeMethod:@"Interstitial_onAdClosed" arguments:nil];
 }
 
-- (void)interstitialAdWillDismissScreen:(ADXInterstitialAd *)interstitialAd {
+- (void)interstitialAdDidClick:(ADXInterstitialAd *)v {
+    [self.channel invokeMethod:@"Interstitial_onAdClicked" arguments:nil];
 }
 
-- (void)interstitialAdDidDismissScreen:(ADXInterstitialAd *)interstitialAd {
-    [adxSdkChannel invokeMethod: @"Interstitial_onAdClosed" arguments: nil];
+- (void)interstitialAdWillDismissScreen:(ADXInterstitialAd *)v {
 }
 
-- (void)interstitialAdDidClick:(ADXInterstitialAd *)interstitialAd {
-    [adxSdkChannel invokeMethod: @"Interstitial_onAdClicked" arguments: nil];
+// Rewarded
+- (void)rewardedAdDidLoad:(ADXRewardedAd *)v {
+    [self.channel invokeMethod:@"RewardedAd_onAdLoaded" arguments:nil];
 }
 
-#pragma mark - ADXRewardedAdDelegate
-
-- (void)rewardedAdDidLoad:(ADXRewardedAd *)rewardedAd {
-    [adxSdkChannel invokeMethod: @"RewardedAd_onAdLoaded" arguments: nil];
+- (void)rewardedAd:(ADXRewardedAd *)v didFailToLoadWithError:(NSError *)e {
+    [self.channel invokeMethod:@"RewardedAd_onAdError"
+                     arguments:@{@"error_code" : @(e.code)}];
 }
 
-- (void)rewardedAd:(ADXRewardedAd *)rewardedAd didFailToLoadWithError:(NSError *)error {
-    NSDictionary *args = @{@"error_code" : [NSNumber numberWithLong:error.code]};
-
-    [adxSdkChannel invokeMethod: @"RewardedAd_onAdError" arguments: args];
+- (void)rewardedAd:(ADXRewardedAd *)v didFailToShowWithError:(NSError *)e {
+    [self.channel invokeMethod:@"RewardedAd_onAdFailedToShow" arguments:nil];
 }
 
-- (void)rewardedAd:(ADXRewardedAd *)rewardedAd didFailToShowWithError:(NSError *)error {
-    [adxSdkChannel invokeMethod: @"RewardedAd_onAdFailedToShow" arguments: nil];
+- (void)rewardedAdWillPresentScreen:(ADXRewardedAd *)v {
+    [self.channel invokeMethod:@"RewardedAd_onAdImpression" arguments:nil];
 }
 
-- (void)rewardedAdWillPresentScreen:(ADXRewardedAd *)rewardedAd {
-    [adxSdkChannel invokeMethod: @"RewardedAd_onAdImpression" arguments: nil];
+- (void)rewardedAdDidDismissScreen:(ADXRewardedAd *)v {
+    [self.channel invokeMethod:@"RewardedAd_onAdClosed" arguments:nil];
 }
 
-- (void)rewardedAdWillDismissScreen:(ADXRewardedAd *)rewardedAd {
-    
+- (void)rewardedAdDidRewardUser:(ADXRewardedAd *)v withReward:(ADXReward *)r {
+    [self.channel invokeMethod:@"RewardedAd_onAdRewarded" arguments:nil];
 }
 
-- (void)rewardedAdDidDismissScreen:(ADXRewardedAd *)rewardedAd {
-    [adxSdkChannel invokeMethod: @"RewardedAd_onAdClosed" arguments: nil];
+- (void)rewardedAdDidClick:(ADXRewardedAd *)v {
+    [self.channel invokeMethod:@"RewardedAd_onAdClicked" arguments:nil];
 }
 
-- (void)rewardedAdDidRewardUser:(ADXRewardedAd *)rewardedAd withReward:(ADXReward *)reward {
-    [adxSdkChannel invokeMethod: @"RewardedAd_onAdRewarded" arguments: nil];
-}
-
-- (void)rewardedAdDidClick:(ADXRewardedAd *)rewardedAd {
-    [adxSdkChannel invokeMethod: @"RewardedAd_onAdClicked" arguments: nil];
+- (void)rewardedAdWillDismissScreen:(ADXRewardedAd *)v {
 }
 
 @end

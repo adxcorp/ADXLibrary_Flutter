@@ -35,7 +35,6 @@ Future<void> requestTrackingAuthorization() async {
   final TrackingStatus status =
   await AppTrackingTransparency.trackingAuthorizationStatus;
   if (status == TrackingStatus.notDetermined) {
-    final TrackingStatus status =
     await AppTrackingTransparency.requestTrackingAuthorization();
   }
   final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();

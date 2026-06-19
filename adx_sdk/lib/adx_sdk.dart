@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:adx_sdk/src/adx_sdk_listener.dart';
 import 'package:adx_sdk/src/adx_sdk_common.dart';
@@ -6,7 +7,7 @@ export 'package:adx_sdk/src/adx_sdk_listener.dart';
 export 'package:adx_sdk/src/adx_sdk_common.dart';
 
 class AdxSdk {
-  static const version = "1.0.8";
+  static const version = "1.0.9";
 
   static const channel = MethodChannel('adx_sdk');
 
@@ -21,7 +22,7 @@ class AdxSdk {
     channel.setMethodCallHandler((MethodCall call) async {
       var method = call.method;
       var arguments = call.arguments;
-      print("method : $method");
+      debugPrint("method : $method");
 
       if (method == "BannerAd_onAdLoaded") {
         _bannerListener?.onAdLoaded();

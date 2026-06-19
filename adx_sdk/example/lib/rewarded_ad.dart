@@ -25,7 +25,7 @@ class _AdxRewardedAd extends State<AdxRewardedAd> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   AdxSdk.setRewardedAdListener(RewardedAdListener(
                     onAdLoaded: (){
                       debugPrint("AdxSample RewardedAd - onAdLoaded");
@@ -42,6 +42,11 @@ class _AdxRewardedAd extends State<AdxRewardedAd> {
                     }, onAdFailedToShow: (){
                       debugPrint("AdxSample RewardedAd - onAdFailedToShow");
                     }));
+                  bool isLoaded = (await AdxSdk.isRewardedAdLoaded(adUnitId))!;
+                  if (isLoaded) {
+                    debugPrint("AdxSample RewardedAd - Ad is already loaded.");
+                    return;
+                  }
                   AdxSdk.loadRewardedAd(adUnitId);
                 },
                 child: const Text('Load'),

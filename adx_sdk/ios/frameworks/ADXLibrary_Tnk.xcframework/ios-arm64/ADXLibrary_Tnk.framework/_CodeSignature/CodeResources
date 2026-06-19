@@ -6,7 +6,7 @@
 	<dict>
 		<key>GoogleMobileAdsResources.bundle/Info.plist</key>
 		<data>
-		T9HZ48X/lk8abX6t5rM+tOCViSU=
+		0htDHMQQraqnNKC/E/bI9pTlC8s=
 		</data>
 		<key>GoogleMobileAdsResources.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -34,7 +34,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		6799pi7WqI7jA7i6BHhcHCh5Qy0=
+		TacF7oHnQdADIexkjJonFtLarYA=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -42,7 +42,7 @@
 		</data>
 		<key>UserMessagingPlatformResources.bundle/Info.plist</key>
 		<data>
-		b/1lBlwOZ7JDjuOUUsI07HVajTo=
+		mpIgcOtso9me82JFFMycygd22fs=
 		</data>
 		<key>UserMessagingPlatformResources.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -53,21 +53,13 @@
 	<dict>
 		<key>GoogleMobileAdsResources.bundle/Info.plist</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			T9HZ48X/lk8abX6t5rM+tOCViSU=
-			</data>
 			<key>hash2</key>
 			<data>
-			KIFQW/ocVbeReZ/THxAJrlVKwQYZy4sVB+QAVs0GoxM=
+			8LNjskmDSMZnzQ3WqtIsTqLUvXmoa53N4TIlalH0ApI=
 			</data>
 		</dict>
 		<key>GoogleMobileAdsResources.bundle/PrivacyInfo.xcprivacy</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			VWCA3MeaiPMoOAS1uOteTSLX8js=
-			</data>
 			<key>hash2</key>
 			<data>
 			afsRJYL8I/wGxjXJYdJio/e0tWVNKEeHSR3jAA2t+dI=
@@ -75,10 +67,6 @@
 		</dict>
 		<key>Headers/ADXLibrary_Tnk.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			5Gq5Pic9LlBBhTjNDmMCTCrRVdI=
-			</data>
 			<key>hash2</key>
 			<data>
 			DFjM+LQjM415erTej8BMlpxenosdtCviETObZpVkIi4=
@@ -86,10 +74,6 @@
 		</dict>
 		<key>Headers/ADXTnkBannerAd.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			9h+2XXVMZKYNRlNvD0vphAQAc/o=
-			</data>
 			<key>hash2</key>
 			<data>
 			IOW17rP3YNKbkY5APPs8+5RwW/ePyRWH0Aja3OitCEQ=
@@ -97,10 +81,6 @@
 		</dict>
 		<key>Headers/ADXTnkInterstitialAd.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			EcQ21+QeWfpTcf0xswEo5WkTQPA=
-			</data>
 			<key>hash2</key>
 			<data>
 			82s8nQNvj1U5ZRYCLLKLJy9p6pCgA1hAAMdwS3bKDBI=
@@ -108,10 +88,6 @@
 		</dict>
 		<key>Headers/ADXTnkNativeAd.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			7CUaFMQDmt8z6Wict42AR2mE7TU=
-			</data>
 			<key>hash2</key>
 			<data>
 			Um+LT8BvakkzGPIHgylwcYcwKG75yEDSXG1LVbtoyrs=
@@ -119,10 +95,6 @@
 		</dict>
 		<key>Headers/ADXTnkRewardedAd.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Rk85DUpF56Jy0DVxMBYSnFwRzpI=
-			</data>
 			<key>hash2</key>
 			<data>
 			RIG8OVljC6xfM0tOdTpIBwGtW9N2JFdhzJE4HNnwbEU=
@@ -130,10 +102,6 @@
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			QN3n9uGCJdbeZKuDmaVlTQa61Kc=
-			</data>
 			<key>hash2</key>
 			<data>
 			5BPZvpDl3oDV1BE1hd3l2wtvoumrKQ0YMZHeAiyYIWs=
@@ -141,21 +109,13 @@
 		</dict>
 		<key>UserMessagingPlatformResources.bundle/Info.plist</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			b/1lBlwOZ7JDjuOUUsI07HVajTo=
-			</data>
 			<key>hash2</key>
 			<data>
-			OjtoQKyxO01gGc0l76U0wRnUf0ndMNkG4FOa2hb+/CY=
+			vJYGXB6WDFVZb96zVHr3oXEHDNEPTq42gXx29HPPxQU=
 			</data>
 		</dict>
 		<key>UserMessagingPlatformResources.bundle/PrivacyInfo.xcprivacy</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			k9OFlDPBRWfteJ+bfG12WAoBuls=
-			</data>
 			<key>hash2</key>
 			<data>
 			RbetuZ/NLZYqHIAPv8wTJbV6f6QWX0FhgjI7tf/pyQA=
