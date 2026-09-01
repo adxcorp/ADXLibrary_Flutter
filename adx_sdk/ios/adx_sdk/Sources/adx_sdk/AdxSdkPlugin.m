@@ -1,4 +1,5 @@
 #import "AdxSdkPlugin.h"
+#import <os/log.h>
 
 @interface AdxSdkPlugin () <ADXAdViewDelegate, ADXInterstitialAdDelegate, ADXRewardedAdDelegate>
 @property(strong) NSMutableDictionary<NSString *, ADXAdView *> *adViews;
@@ -14,6 +15,15 @@
 @implementation AdxSdkPlugin
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
+    // colorWithHexString: is a real category method shipped inside ADXLibrary.xcframework
+    // (UIColor+ADXHexString). A category-only .o file in a prebuilt static xcframework is
+    // dropped by the linker unless "-ObjC" is passed, so this doubles as a check for that flag.
+    if (![UIColor respondsToSelector:@selector(colorWithHexString:)]) {
+        os_log_fault(OS_LOG_DEFAULT,
+                     "🚨🚨🚨 [adx_sdk] MISSING \"-ObjC\" LINKER FLAG 🚨🚨🚨\n"
+                     "Add \"-ObjC\" to the Runner target's Build Settings > Other Linker Flags.\n"
+                     "Without it, ADX SDK cannot request ads.");
+    }
     AdxSdkPlugin *instance = [[AdxSdkPlugin alloc] init];
     instance.channel =
             [FlutterMethodChannel methodChannelWithName:@"adx_sdk"
