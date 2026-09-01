@@ -49,6 +49,12 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
+  # adx_sdk ships as a Swift Package (ios/adx_sdk/Package.swift) instead of a
+  # CocoaPods podspec, so Swift Package Manager support must be on for this
+  # project regardless of the machine's global `flutter config` setting.
+  config:
+    enable-swift-package-manager: true
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
