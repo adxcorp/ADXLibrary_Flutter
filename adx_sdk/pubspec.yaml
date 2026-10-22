@@ -6,7 +6,7 @@ repository: https://github.com/adxcorp/ADXLibrary_Flutter
 
 environment:
   sdk: '>=2.19.6 <4.0.0'
-  flutter: ">=2.5.0"
+  flutter: ">=3.24.0"
 
 dependencies:
   flutter:
@@ -40,7 +40,7 @@ flutter:
         pluginClass: AdxSdkPlugin
       ios:
         pluginClass: AdxSdkPlugin
-        minimum_os_version: 13.0
+        minimum_os_version: 15.0
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
