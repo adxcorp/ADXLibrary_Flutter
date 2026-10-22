@@ -1,3 +1,7 @@
+## 1.10.0
+* Android SDK 2.9.2 업데이트
+* iOS SDK 2.9.1 업데이트
+* iOS CocoaPods 지원 제거 및 SPM 전용 구성으로 전환
 ## 1.0.9
 * Android SDK 2.8.2 업데이트
 * iOS SDK 2.8.5 업데이트
