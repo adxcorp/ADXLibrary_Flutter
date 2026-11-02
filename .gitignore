@@ -2,8 +2,10 @@
 
 # Files and directories created by pub
 .dart_tool/
+.idea
 .packages
-build/
+.build/
+
 # If you're building an application, you may want to check-in your pubspec.lock
 pubspec.lock
 
@@ -25,3 +27,8 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# iOS
+*.resolved
+.DS_Store
+.swiftpm/

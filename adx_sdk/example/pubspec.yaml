@@ -28,7 +28,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  app_tracking_transparency: ^2.0.4
+  app_tracking_transparency: ^2.0.7
 
 dev_dependencies:
   integration_test:
@@ -48,6 +48,12 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+
+  # adx_sdk ships as a Swift Package (ios/adx_sdk/Package.swift) instead of a
+  # CocoaPods podspec, so Swift Package Manager support must be on for this
+  # project regardless of the machine's global `flutter config` setting.
+  config:
+    enable-swift-package-manager: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
